@@ -14,17 +14,13 @@
  	*  </pre>
  	*
 
- 	* @version     1.0
+ 	* @version     1.1
  	*/
 public class DTW2 {
-
     protected float[] seq1;
     protected float[] seq2;
     protected int[][] warpingPath;
-    protected int n;
-    protected int m;
-    protected int K;
-
+    protected int n,m,k;
     protected double warpingDistance;
 
     public DTW2(float[] sample, float[] templete) {
@@ -35,7 +31,8 @@ public class DTW2 {
         m = seq2.length;
         K = 1;
 
-        warpingPath = new int[n + m][2]; // max(n, m) <= K < n + m
+        warpingPath = new int[seq1.length + seq2.length][2];
+		// max(seq1.length, seq2.length) <= K < seq1.length + seq2.length
         warpingDistance = 0.0;
 
         this.compute();
@@ -43,10 +40,9 @@ public class DTW2 {
 
     public void compute() {
         double accumulatedDistance = 0.0;
-
-        double[][] d = new double[n][m]; // local distances
-        double[][] D = new double[n][m]; // global distances
-
+        double[][] d = new double[seq1.length][seq2.length]; // local distances
+        double[][] D = new double[seq1.length][seq2.length]; // global distances
+		
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < m; j++) {
                 d[i][j] = distanceBetween(seq1[i], seq2[j]);
@@ -55,11 +51,11 @@ public class DTW2 {
 
         D[0][0] = d[0][0];
 
-        for (int i = 1; i < n; i++) {
+        for (int i = 1; i < seq1.length; i++) {
             D[i][0] = d[i][0] + D[i - 1][0];
         }
 
-        for (int j = 1; j < m; j++) {
+        for (int j = 1; j < seq2.length; j++) {
             D[0][j] = d[0][j] + D[0][j - 1];
         }
 
