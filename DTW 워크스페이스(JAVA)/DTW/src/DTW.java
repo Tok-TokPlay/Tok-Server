@@ -1,29 +1,39 @@
-
 public class DTW {
-
 	private double distance;
 	private static int MAX = 99999;
+	
 	public DTW(int[] n1,int[] n2){
 		int i,j = 0;
 		int cost = 0;
+		int largeLength, smallLength;
 		// Initialize must doing one statement by one line.
-		int dtw[][] = new int[n1.length+1][n2.length+1];
+
+		int dtw[][] = new int[n1.length + 1][n2.length + 1];
+		// dtw[][] will be used to show weigt of each path.
+		dtw[0][0] = 0;
 		
-		dtw[0][0]=0;
-		//because n2 has small size,
-		
-		for(i=1;i<=n2.length;i++){
-			dtw[i][0]=MAX;
-			dtw[0][i]=MAX;
+		if(n1.length > n2.length)	{
+			largeLength = n1.length;
+			smallLength = n2.length;
+		}
+		else {
+			largeLength = n2.length;
+			smallLength = n1.length;
+		}
+		// Initialize length values with input sequence n1 and n2.
+
+		for(i = 1 ; i <= smallLength ; i++){
+			dtw[i][0] = MAX;
+			dtw[0][i] = MAX;
 		}
 		
-		for(;i<=n1.length;i++){
-			dtw[i][0]=MAX;
+		for(; i <= largeLength ; i++){
+			dtw[i][0] = MAX;
 		}
 		
-		for(i=1;i<=n1.length;i++){
-			for(j=1;j<=n2.length;j++){
-				cost = (int) Math.abs(n1[i-1]-n2[j-1]);
+		for(i = 1 ; i <= largeLength ; i++){
+			for(j = 1 ; j <= smallLength ; j++){
+				cost = (int)Math.abs(n1[i-1]-n2[j-1]);
 				dtw[i][j] = cost+Math.min(dtw[i-1][j-1],Math.min(dtw[i-1][j],dtw[i][j-1]));
 			}
 		}
