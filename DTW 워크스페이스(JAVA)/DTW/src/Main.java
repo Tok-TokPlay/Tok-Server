@@ -9,6 +9,8 @@ public class Main {
 	public static void main(String[] args) throws IOException {
 		float num;
 
+		FileClass fc = new FileClass();
+		fc.randomMapping(3);
 		// There were several ways of File handling ... so I did two kinds of
 		// them. (그냥 두개의 방법으로 파일입출력 한거 for study...?) 
 		
