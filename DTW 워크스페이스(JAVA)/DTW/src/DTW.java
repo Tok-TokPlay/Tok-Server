@@ -36,7 +36,10 @@ public class DTW {
 			for(j = 1 ; j <= n2.length ; j++){
 				// Start from (1, 1), take min value of dtw[i-1][j], dtw[i][j-1], dtw[i-1][j-1] + cost.
 				// Cost will be "Uclidean Distance" of each sequence.
+
 				cost = (int)Math.abs(n1[i-1] - n2[j-1]);
+				// sequence's order is 1 smaller then dtw map.
+				
 				dtw[i][j] = cost + Math.min(dtw[i-1][j-1], Math.min(dtw[i-1][j], dtw[i][j-1]));
 			}
 		}

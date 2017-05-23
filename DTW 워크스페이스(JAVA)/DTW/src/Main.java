@@ -102,18 +102,8 @@ public class Main {
 		}
 
 		// skip the last binary numbers...
-
 		
-		
-		
-		
-		
-		
-		
-		/* This code is to practice the original DTW 
-		 * 
-		 * 
-		 * 
+		/* This code is to practice the original DTW  
 		 * 
 		 * ArrayList<Character> arrayList = new ArrayList<Character>(); String
 		 * filename = "ww.txt"; FileInputStream fis = new
