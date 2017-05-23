@@ -4,14 +4,19 @@ public class DTW {
 	private double distance;
 	private static int MAX = 99999;
 	public DTW(int[] n1,int[] n2){
-		int i,j = 0,cost =0;
-		int dtw[][]=new int[n1.length+1][n2.length+1];
+		int i,j = 0;
+		int cost = 0;
+		// Initialize must doing one statement by one line.
+		int dtw[][] = new int[n1.length+1][n2.length+1];
+		
 		dtw[0][0]=0;
 		//because n2 has small size,
+		
 		for(i=1;i<=n2.length;i++){
 			dtw[i][0]=MAX;
 			dtw[0][i]=MAX;
 		}
+		
 		for(;i<=n1.length;i++){
 			dtw[i][0]=MAX;
 		}
@@ -22,15 +27,18 @@ public class DTW {
 				dtw[i][j] = cost+Math.min(dtw[i-1][j-1],Math.min(dtw[i-1][j],dtw[i][j-1]));
 			}
 		}
+		
 		distance = (double)dtw[n1.length][n2.length]/n2.length;
 	}
-	public double getDistance(){
-		return distance;
+	
+	public double getDistance()	{
+		return this.distance;
+		// to clarify which variable must be return, add this.
 	}
 }
 
 /**
- * Created by ¹ÚÁøÈñ on 2017-05-19.
+ * Created by park jin hee on 2017-05-19.
  */
 
 
@@ -38,8 +46,10 @@ public class DTW {
  	 * This class implements the Dynamic Time Warping algorithm
  	 * given two sequences
  	 * <pre>
- 	 *   X = x1, x2,..., xi,..., xn
- 	 *   Y = y1, y2,..., yj,..., ym
+	 * 	input : two sequences
+ 	 *  	X = x1, x2, ..., xi, ..., xn
+ 	 *  	Y = y1, y2, ..., yj, ..., ym
+	 * 	output : similarity of given two sequences.
  	 *  </pre>
  	 *
 
@@ -57,11 +67,6 @@ class DTW2 {
 
     protected double warpingDistance;
 
-    /**
-     * Constructor
-     *
-     *
-     */
     public DTW2(float[] sample, float[] templete) {
         seq1 = sample;
         seq2 = templete;
