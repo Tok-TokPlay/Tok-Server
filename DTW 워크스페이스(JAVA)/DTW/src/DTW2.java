@@ -28,7 +28,7 @@ public class DTW2 {
 		n = seq1.length;
 		m = seq2.length;
 		K = 1;
-
+System.out.println("n ,m : "+n+","+m);
 		// max(seq1.length, seq2.length) <= K < seq1.length + seq2.length
 		warpingDistance = 0.0;
 
@@ -37,8 +37,8 @@ public class DTW2 {
 
 	public void compute() {
 		double accumulatedDistance = 0.0;
-		double[][] d = new double[seq1.length][seq2.length]; // local distances
-		double[][] D = new double[seq1.length][seq2.length]; // global distances
+		double[][] d = new double[n][m]; // local distances
+		double[][] D = new double[n][m]; // global distances
 
 		for (int i = 0; i < n; i++) {
 			for (int j = 0; j < m; j++) {
