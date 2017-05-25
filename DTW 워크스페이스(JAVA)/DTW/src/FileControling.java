@@ -32,12 +32,12 @@ public class FileControling {
 		}
 	}
 
-	float[] getN2(int numOfFile) throws IOException {
+	int[] getN2(int numOfFile) throws IOException {
 		Random rand = new Random();
 		int randomI = rand.nextInt(numOfFile);
 		int length = 1000;
 		char[] tmp = new char[1000];
-		float [] n2 = new float[1000];
+		int [] n2 = new int[1000];
 
 		filename = randomI + ".txt";
 		FileReader reader = new FileReader(filename);
@@ -59,7 +59,6 @@ public class FileControling {
 				n2[i] = tmp[i] - '0';
 		}
 		reader.close();
-
 		return n2;
 	}
 	

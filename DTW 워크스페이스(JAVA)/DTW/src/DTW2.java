@@ -16,19 +16,19 @@
  * @version 1.1
  */
 public class DTW2 {
-	protected float[] seq1;
-	protected float[] seq2;
+	protected int[] seq1;
+	protected int[] seq2;
 	protected int n, m, K;
 	protected double warpingDistance;
 
-	public DTW2(float[] sample, float[] templete) {
+	public DTW2(int[] sample, int[] templete) {
 		seq1 = sample;
 		seq2 = templete;
 
 		n = seq1.length;
 		m = seq2.length;
 		K = 1;
-System.out.println("n ,m : "+n+","+m);
+//System.out.println("n ,m : "+n+","+m);
 		// max(seq1.length, seq2.length) <= K < seq1.length + seq2.length
 		warpingDistance = 0.0;
 

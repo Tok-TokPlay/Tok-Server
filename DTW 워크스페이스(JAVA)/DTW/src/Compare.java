@@ -5,25 +5,26 @@ import java.util.ArrayList;
 
 public class Compare {
 
+	protected static int SEG_LENGTH = 1000;
+	private int correctable[] = new int[SEG_LENGTH];
+
 	// I will move the compare 'Main'class's function to here
-	double compareResult(int fileNumber, float n2[]) throws IOException{
-		double result=-1.0;
+	double compareResult(int fileNumber, int n2[]) throws IOException {
+		double result = -1.0;
 		int num;
-		String filename =fileNumber +".txt";
+		String filename = fileNumber + ".txt";
 		FileReader reader = new FileReader(filename);
 		ArrayList<Character> arrayList = new ArrayList<Character>();
-		
-		
+
 		while ((num = reader.read()) != -1) {
 			// read only 1 and 0 (not '\n'...so on)
 			if (num == '1' || num == '0')
 				arrayList.add((char) num);
 		}
 		reader.close();
-		
-		float segmentedN1[] = new float[((int) (n2.length))];
+
+		int segmentedN1[] = new int[SEG_LENGTH];
 		int segSize = arrayList.size() / n2.length;
-		
 
 		// compare each segmentedN1 with n1
 		int i = 0;
@@ -31,8 +32,9 @@ public class Compare {
 		int minSeg = 0;
 		int tmpSegSize = segSize;
 		ArrayList<Integer> minSegArr = new ArrayList<>();
+
 		while (tmpSegSize > 0) {
-			for (int j = 0; j < ((int) (n2.length)); j++, i++) {
+			for (int j = 0; j < SEG_LENGTH; j++, i++) {
 				segmentedN1[j] = arrayList.get(i) - '0';
 			}
 			DTW2 dtw = new DTW2(segmentedN1, n2);
@@ -46,10 +48,15 @@ public class Compare {
 			}
 			tmpSegSize--;
 		}
-		
-		// go to one of minimum value stage!
+
+
+		//here is the most similarity part of the arrayList!
+		//And I will check more detail around this part.(
+		//@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@min2부분 고치고 for문 큰거 이거 고치기@@@@@@@@@@@@
 		int tmpi;
+		double min2=100;
 		for (int l = 0; l < minSegArr.size(); l++) {
+			min2 = 100;
 			int k = 0;
 			i = (segSize - minSegArr.get(l) - 1) * n2.length + n2.length / 3; // 3등분해서
 																				// 지나감
@@ -62,20 +69,31 @@ public class Compare {
 				k = 2;
 				i = 0;
 			}
-			// to see where is similarity part~
+			
 			for (; k < 5; k++) {
 				tmpi = i;
-				for (int j = 0; j < ((int) (n2.length)); j++, tmpi++) {
+				//<Char> to integer
+				for (int j = 0; j < SEG_LENGTH; j++, tmpi++) {
 					segmentedN1[j] = arrayList.get(tmpi) - '0';
 				}
+				//check similarity by DTW
 				DTW2 dtw = new DTW2(segmentedN1, n2);
-				if (min > dtw.getDistance()) {
-					min = dtw.getDistance();
+				//store the minimum result of DTW
+				if (min2 > dtw.getDistance()) {
+					min2 = dtw.getDistance();
+					System.out.println(k + "_min : " + min2);
+					correctable = segmentedN1;
 				}
 				i = i + n2.length / 3;
 			}
 		}
-		result = min;
+		minSegArr.clear();
+		arrayList.clear();
+		result = min2;
 		return result;
+	}
+
+	int[] getCorrectable() {
+		return correctable;
 	}
 }
