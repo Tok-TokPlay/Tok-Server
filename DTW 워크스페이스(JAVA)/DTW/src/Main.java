@@ -6,45 +6,70 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 
 public class Main {
-	private static int TXT = 10;
+	private final static int TXT = 10;
 
 	public static void main(String[] args) throws IOException {
-		float num;
+		int count = 0;
+		int correct = 0;
 
-		int n2[] = new int[1000];
-		double value;
-		double min = 100;
-		int minI = -1;
-		FileControling fc = new FileControling();
-		Compare c = new Compare();
-		int[] correctable = new int[Compare.SEG_LENGTH];
+		for (int k = 0; k < 10; k++) {
+			System.out.println(k + "OOOOOOOOOOOO");
+			float num;
+			int n2[] = new int[1000];
+			double value;
+			double min[] = new double[3];
+			int minI = -1;
+			int minArr[] = new int[3];
+			int minCount = 0;
 
-		fc.randomMapping(TXT); // Make txt file (number of TXT) n2 =
-		n2 = fc.getN2(TXT);
-		for (int i = 0; i < 100; i++)
-			System.out.print((int) n2[i]);
-		System.out.println();
-		for (int i = 0; i < TXT; i++) {
-			System.out.println();
-			value = c.compareResult(i, n2);
-			System.out.println(i + "'s min value is " + value);
-			if(value==0){
-				correctable = c.getCorrectable();
-				System.out.println(i + "'s correctable is ");
-				System.out.println(Compare.SEG_LENGTH);
-				for (int j = 0; j < Compare.SEG_LENGTH; j++) {
-					System.out.print(correctable[j]);
+			FileControling fc = new FileControling();
+			Compare c = new Compare();
+			int[] correctable = new int[Compare.SEG_LENGTH];
+
+			fc.randomMapping(TXT); // Make txt file (number of TXT) n2 =
+			n2 = fc.getN2(TXT);
+			/*
+			 * for (int i = 0; i < n2.length; i++) System.out.print((int)
+			 * n2[i]); System.out.println();
+			 */
+			for (int i = 0; i < TXT; i++) {
+				// System.out.println();
+				value = c.compareResult(i, n2);
+				System.out.println(i + "'s min value is " + value);
+				/*
+				 * if (value == 0) { correctable = c.getCorrectable();
+				 * System.out.println(i + "'s correctable is "); for (int j = 0;
+				 * j < Compare.SEG_LENGTH; j++) {
+				 * System.out.print(correctable[j]); } System.out.println(); }
+				 */
+
+				// gather about 3 similar files
+				if (minCount < 3) {
+					min[minCount++] = value;
+				} else {
+					for (int j = 0; j < 3; j++) {
+						if (min[j] > value) {
+							min[j] = value;
+							minArr[j] = i;
+							break;
+						}
+					}
 				}
-				System.out.println();
 			}
-			if (min > value) {
-				min = value;
-				minI = i;
+			for (int j = 0; j < 3; j++) {
+				if (fc.getN2File() == minArr[j]) {
+					correct++;
+					break;
+				}
 			}
+			count++;
+			System.out.println("n2 was in " + fc.getN2File());
 		}
-		System.out.println("n2 was in " + fc.getN2File());
-		System.out.println("min value is " + min);
-		System.out.println("the result is " + minI);
+		System.out.println();
+		System.out.println("---------------------------------------------------------------");
+		System.out.println("Accuracy : " + (float) correct / count);
+		// System.out.println("min value is " + min);
+		// System.out.println("the result is " + minI);
 
 		/*
 		 * // skip the last binary numbers...
