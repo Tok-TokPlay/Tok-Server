@@ -21,7 +21,7 @@ public class Compare {
 
 		while ((num = reader.read()) != -1) {
 			// read only 1 and 0 (not '\n'...so on)
-			if (num  == '1' || num  == '0'|| num  == '2'|| num  == '3'|| num  == '4'|| num  == '5'|| num  == '6'|| num  == '7'|| num  == '8'|| num  == '9')
+			if (num == '1' || num == '0')
 				arrayList.add((char) num);
 		}
 		reader.close();

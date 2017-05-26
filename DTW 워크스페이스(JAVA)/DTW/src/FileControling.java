@@ -13,7 +13,6 @@ public class FileControling {
 
 	private String filename;
 	private int n2File;
-	
 	void randomMapping(int numOfFile) throws IOException {
 		int arr[] = new int[1000];
 		Random rand = new Random();
@@ -26,7 +25,7 @@ public class FileControling {
 			FileWriter fw = new FileWriter(file);
 			for (int j = 0; j < 200; j++) {
 				for (int k = 0; k < 1000; k++) {
-					fw.write((char) rand.nextInt(10) + '0');
+					fw.write((char) rand.nextInt(2) + '0');
 				}
 			}
 			fw.close();
@@ -56,7 +55,7 @@ public class FileControling {
 		reader.read(tmp);
 			
 		for (int i = 0; i < length; i++) {
-			if (tmp[i] == '1' || tmp[i] == '0'|| tmp[i] == '2'|| tmp[i] == '3'|| tmp[i] == '4'|| tmp[i] == '5'|| tmp[i] == '6'|| tmp[i] == '7'|| tmp[i] == '8'|| tmp[i] == '9')
+			if (tmp[i] == '1' || tmp[i] == '0')
 				n2[i] = tmp[i] - '0';
 		}
 		reader.close();
