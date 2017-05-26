@@ -67,7 +67,7 @@ public class Main {
 		}
 		System.out.println();
 		System.out.println("---------------------------------------------------------------");
-		System.out.println("Accuracy : " + (float) correct / count);
+		System.out.println("Accuracy : " + (float) correct / count *100 +"%");
 		// System.out.println("min value is " + min);
 		// System.out.println("the result is " + minI);
 
