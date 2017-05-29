@@ -5,8 +5,7 @@ import java.util.ArrayList;
 
 public class Compare {
 
-	// seg_length_1000 == n2.size();
-	private final static int SEG_LENGTH_1000 = 1000;
+	private final static int SEG_LENGTH_1000 = 1000;	//segment the N1(original array) with size 1000
 	public final static int SEG_LENGTH = SEG_LENGTH_1000 + (SEG_LENGTH_1000 / 3);
 	private final static int MIN_ERROR_RANGE = 5;
 	private int correctable[] = new int[SEG_LENGTH];
@@ -94,17 +93,6 @@ public class Compare {
 			for (; k < 5; k++) {
 				tmpi = i;
 				// <Char> to integer
-
-				/*
-				 * Error occur Exception in thread "main"
-				 * java.lang.IndexOutOfBoundsException: Index: 200000, Size:
-				 * 200000 at java.util.ArrayList.rangeCheck(ArrayList.java:653)
-				 * at java.util.ArrayList.get(ArrayList.java:429) at
-				 * Compare.compareResult(Compare.java:99) at
-				 * Main.main(Main.java:33)
-				 * 
-				 */
-				
 				//temporary, I set tmpi boundary
 				for (int j = 0; j < SEG_LENGTH_1000 &&tmpi<200000; j++, tmpi++) {
 					segmentedN1_1000[j] = arrayList.get(tmpi) - '0';
