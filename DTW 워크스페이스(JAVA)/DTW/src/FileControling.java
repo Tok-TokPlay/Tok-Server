@@ -1,3 +1,4 @@
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -7,62 +8,107 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.CharBuffer;
 import java.nio.file.*;
+import java.util.ArrayList;
 import java.util.Random;
+import java.util.StringTokenizer;
 
 public class FileControling {
 
 	private String filename;
 	private int n2File;
+	// This should be deleted in a jarFile@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+	private static final int n2Size = 1000;
+
+	BufferedReader openReader(int fileNum) throws FileNotFoundException {
+		String filename = "C:\\Users\\4F\\Desktop\\SongData2\\" + fileNum
+				+ ".txt";
+		// read file and store at Buffer
+		BufferedReader in = new BufferedReader(new FileReader(filename));
+		return in;
+	}
+
 	void randomMapping(int numOfFile) throws IOException {
 		int arr[] = new int[1000];
 		Random rand = new Random();
 
 		for (int i = 0; i < numOfFile; i++) {
-			filename = i + ".txt";
+			String filename = "C:\\Users\\4F\\Desktop\\SongData2\\" + i
+					+ ".txt";
 			File file = new File(filename);
 			file.createNewFile();
 
 			FileWriter fw = new FileWriter(file);
 			for (int j = 0; j < 200; j++) {
-				for (int k = 0; k < 1000; k++) {
-					fw.write((char) rand.nextInt(2) + '0');
+				for (int k = 0; k < 1000; k++) { // for testing, I recommend not
+													// 1000, just 100... not to
+													// bumb...
+					int z = rand.nextInt(1000);
+					fw.write(Integer.toString(z));
+					fw.write("\r\n");
 				}
 			}
 			fw.close();
 		}
 	}
 
+	ArrayList getN1List(int fileNum) throws IOException {
+		StringTokenizer token;
+		String temp;
+		ArrayList n1 = new ArrayList();
+		String filename = "C:\\Users\\4F\\Desktop\\SongData2\\" + fileNum
+				+ ".txt";
+		// read file and store at Buffer
+		BufferedReader in = new BufferedReader(new FileReader(filename));
+		while ((temp = in.readLine()) != null) { // read one by one
+			n1.add(temp);
+		}
+		return n1;
+
+	}
+
 	int[] getN2(int numOfFile) throws IOException {
+
 		Random rand = new Random();
 		int randomI = rand.nextInt(numOfFile);
-		int length = 1000;
+		int length = n2Size;
 		char[] tmp = new char[1000];
-		int [] n2 = new int[1000];
+		int[] n2 = new int[n2Size];
+		ArrayList n1 = new ArrayList();
+		StringTokenizer token;
+		ArrayList<String> arrayList = new ArrayList<>();
+		int i = 0;
 
-		filename = randomI + ".txt";
-		FileReader reader = new FileReader(filename);
+		String filename = "C:\\Users\\4F\\Desktop\\SongData2\\" + randomI
+				+ ".txt";
+		// String filename = randomI+".txt";
+		// read file and store at Buffer
+		BufferedReader in = new BufferedReader(new FileReader(filename));
+		n1 = getN1List(randomI);
+		System.out.println(n1.size());
+		int roundBound = n1.size() - n2.length;
+		int pass = rand.nextInt(roundBound);
+		System.out.println("pass : " + pass);
+		String temp = null;
+		// for pass several integer (random amount)
+		System.out.println("n2__________");
+		int count=0;
+		while (pass > 0 && (temp = in.readLine()) != null) {// read one line
+			pass--;
+			//System.out.println(count++);
+			// System.out.println(temp+"_________________________");
+		}
+
+		while ((temp = in.readLine()) != null&&i<n2Size) { // read one by one
+			n2[i++] = Integer.parseInt(temp);
+			System.out.println(temp);
+		}
+		in.close(); // 파일 스트림 닫기
+
 		n2File = randomI;
-
-		// start copy between 0~190000
-		randomI = rand.nextInt(190000);
-		
-		//to get
-		randomI = randomI/tmp.length;
-		while(randomI>0){
-			reader.read(tmp);
-			randomI--;
-		}
-		reader.read(tmp);
-			
-		for (int i = 0; i < length; i++) {
-			if (tmp[i] == '1' || tmp[i] == '0')
-				n2[i] = tmp[i] - '0';
-		}
-		reader.close();
 		return n2;
 	}
-	
-	int getN2File(){
+
+	int getN2File() {
 		return n2File;
 	}
 

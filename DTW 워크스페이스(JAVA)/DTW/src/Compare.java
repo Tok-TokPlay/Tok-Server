@@ -1,3 +1,4 @@
+import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
@@ -15,21 +16,13 @@ public class Compare {
 	double compareResult(int fileNumber, int n2[]) throws IOException {
 		double result = -1.0;
 		int num;
-		String filename = fileNumber + ".txt";
-		FileReader reader = new FileReader(filename);
-		ArrayList<Character> arrayList = new ArrayList<Character>();
-
-		while ((num = reader.read()) != -1) {
-			// read only 1 and 0 (not '\n'...so on)
-			if (num == '1' || num == '0')
-				arrayList.add((char) num);
-		}
-		reader.close();
-
+		String filename = "C:\\Users\\4F\\Desktop\\SongData2\\" + fileNumber+ ".txt";
+		BufferedReader in = new BufferedReader(new FileReader(filename) );
+		FileControling fc = new FileControling();
+		ArrayList n1 = fc.getN1List(fileNumber);
 		int segmentedN1[] = new int[SEG_LENGTH];
 		int segmentedN1_1000[] = new int[SEG_LENGTH_1000];
-		int segSize = arrayList.size() / SEG_LENGTH_1000;
-
+		int segSize = n1.size() / SEG_LENGTH_1000;
 		// compare each segmentedN1 with n1
 		int i = 0;
 		double distance;
@@ -44,11 +37,11 @@ public class Compare {
 			// be smaller than SEG_LENGTH
 			if (SegLocation != 1)
 				for (int j = 0; j < SEG_LENGTH; j++, i++) {
-					segmentedN1[j] = arrayList.get(i) - '0';
+					segmentedN1[j] = Integer.parseInt((String) n1.get(i));
 				}
 			else {
 				for (int j = 0; j < SEG_LENGTH_1000; j++, i++) {
-					segmentedN1_1000[j] = arrayList.get(i) - '0';
+					segmentedN1_1000[j] = Integer.parseInt((String) n1.get(i));
 				}
 			}
 			// to store again (about seg_length/3 size) at next turn...
@@ -75,10 +68,11 @@ public class Compare {
 		// here is the most similarity part of the arrayList!
 		// And I will check more detail around this part.
 		int tmpi;
-		double min2 = 100;
+		double min2 = 9999999;
 		for (int l = 0; l < MIN_ERROR_RANGE; l++) {
 			int k = 0;
-			i = (segSize - minSegArr[l] - 1) * SEG_LENGTH_1000 + (SEG_LENGTH_1000 / 3); // 3등분해서
+			i = (segSize - minSegArr[l] - 1) * SEG_LENGTH_1000 + (SEG_LENGTH_1000 / 3); 
+			// 3등분해서
 			// 지나감
 			// Because the 'minSegArr == 1' means the last segment of the
 			// n1.
@@ -106,8 +100,8 @@ public class Compare {
 				 */
 				
 				//temporary, I set tmpi boundary
-				for (int j = 0; j < SEG_LENGTH_1000 &&tmpi<200000; j++, tmpi++) {
-					segmentedN1_1000[j] = arrayList.get(tmpi) - '0';
+				for (int j = 0; j < SEG_LENGTH_1000 &&tmpi<n1.size(); j++, tmpi++) {
+					segmentedN1_1000[j] = Integer.parseInt((String) n1.get(tmpi));
 				}
 				// check similarity by DTW
 				DTW2 dtw1 = new DTW2(segmentedN1_1000, n2);
@@ -120,7 +114,7 @@ public class Compare {
 			}
 		}
 
-		arrayList.clear();
+		n1.clear();
 		result = min2;
 		return result;
 	}
