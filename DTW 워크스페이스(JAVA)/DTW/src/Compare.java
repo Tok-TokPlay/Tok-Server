@@ -1,7 +1,10 @@
+import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.StringTokenizer;
 
 public class Compare {
 
@@ -14,11 +17,37 @@ public class Compare {
 	double compareResult(int fileNumber, int n2[]) throws IOException {
 		double result = -1.0;
 		int num;
-		String filename = fileNumber + ".txt";
+		StringTokenizer token;
+		String nums=null;
+		String filename = "C:\\Users\\caucse\\Desktop\\SongData"+fileNumber + ".txt";
 		FileReader reader = new FileReader(filename);
 		ArrayList<Character> arrayList = new ArrayList<Character>();
+		
+		try {
+			   BufferedReader in  = new BufferedReader(new FileReader(filename)); //파일로부터 데이터를 읽어 버퍼에 저장
+			   
+			   String temp;
+			   
+			   while ((temp = in.readLine()) != null) { //한 줄씩 읽기
+			    token = new StringTokenizer(temp, " ");  //공백 단위로 끊기 
+			    for (int i = 0; token.hasMoreTokens(); i++) { //한 줄에 있는 단어 수만큼 
+			     arrayList.add(token.nextToken()); //복사하여 쓰기 
+			    }
+			    out.write("\n"); //줄바꿈 표시 
+			   }
+			   in.close();  //파일 스트림 닫기
+			   out.close(); //파일 스트림 닫기 
+			  } catch (Exception e){
+			   e.printStackTrace();
+			  } 
 
+			출처: http://commonintelligence.tistory.com/entry/자바-파일-입출력 [잡 지식의 세계]
 		while ((num = reader.read()) != -1) {
+			nums=null;
+			nums+=num;
+			while((num = reader.read()) != -1 && num != ','){
+				nums+=num;
+			}
 			// read only 1 and 0 (not '\n'...so on)
 			if (num  == '1' || num  == '0'|| num  == '2'|| num  == '3'|| num  == '4'|| num  == '5'|| num  == '6'|| num  == '7'|| num  == '8'|| num  == '9')
 				arrayList.add((char) num);

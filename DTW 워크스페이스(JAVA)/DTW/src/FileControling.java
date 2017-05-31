@@ -13,7 +13,7 @@ public class FileControling {
 
 	private String filename;
 	private int n2File;
-	
+
 	void randomMapping(int numOfFile) throws IOException {
 		int arr[] = new int[1000];
 		Random rand = new Random();
@@ -26,7 +26,9 @@ public class FileControling {
 			FileWriter fw = new FileWriter(file);
 			for (int j = 0; j < 200; j++) {
 				for (int k = 0; k < 1000; k++) {
-					fw.write((char) rand.nextInt(10) + '0');
+					int z = rand.nextInt(1000);
+					fw.write(Integer.toString(z));
+					fw.write(",");
 				}
 			}
 			fw.close();
@@ -38,32 +40,36 @@ public class FileControling {
 		int randomI = rand.nextInt(numOfFile);
 		int length = 1000;
 		char[] tmp = new char[1000];
-		int [] n2 = new int[1000];
-
+		int[] n2 = new int[1000];
+		String nums=null;
 		filename = randomI + ".txt";
 		FileReader reader = new FileReader(filename);
 		n2File = randomI;
 
 		// start copy between 0~190000
 		randomI = rand.nextInt(190000);
-		
-		//to get
-		randomI = randomI/tmp.length;
-		while(randomI>0){
+
+		// to get
+		randomI = randomI / tmp.length;
+		while (randomI > 0) {
 			reader.read(tmp);
 			randomI--;
 		}
 		reader.read(tmp);
-			
-		for (int i = 0; i < length; i++) {
-			if (tmp[i] == '1' || tmp[i] == '0'|| tmp[i] == '2'|| tmp[i] == '3'|| tmp[i] == '4'|| tmp[i] == '5'|| tmp[i] == '6'|| tmp[i] == '7'|| tmp[i] == '8'|| tmp[i] == '9')
-				n2[i] = tmp[i] - '0';
+
+		for (int i = 0,j=0; i < length; i++) {
+			nums="";
+			System.out.print(i);
+			while(tmp[i]!=',' && i<length){
+				nums += Character.toString(tmp[i++]);
+			}
+			n2[j++] = Integer.parseInt(nums);
 		}
 		reader.close();
 		return n2;
 	}
-	
-	int getN2File(){
+
+	int getN2File() {
 		return n2File;
 	}
 
