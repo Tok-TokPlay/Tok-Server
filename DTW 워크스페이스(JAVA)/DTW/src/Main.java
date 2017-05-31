@@ -27,7 +27,7 @@ public class Main {
 			int[] correctable = new int[Compare.SEG_LENGTH];
 
 			fc.randomMapping(TXT); // Make txt file (number of TXT) n2 =
-			n2 = fc.getN2(TXT);
+			//n2 = fc.getN2(TXT);
 			/*
 			 * for (int i = 0; i < n2.length; i++) System.out.print((int)
 			 * n2[i]); System.out.println();
