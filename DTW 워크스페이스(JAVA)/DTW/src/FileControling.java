@@ -23,7 +23,7 @@ public class FileControling {
 		Random rand = new Random();
 
 		for (int i = 0; i < numOfFile; i++) {
-			String filename = "C:\\Users\\user\\Desktop\\SongData\\" + i
+			String filename = "C:\\Users\\5p\\Desktop\\SongData\\" + i
 					+ ".txt";
 			File file = new File(filename);
 			file.createNewFile();
@@ -45,7 +45,7 @@ public class FileControling {
 	ArrayList<String> getN1List(int fileNum) throws IOException {
 		String temp;
 		ArrayList<String> n1 = new ArrayList<String>();
-		String filename = "C:\\Users\\user\\Desktop\\SongData\\" + fileNum
+		String filename = "C:\\Users\\5p\\Desktop\\SongData\\" + fileNum
 				+ ".txt";
 		// read file and store at Buffer
 		FileReader fr = new FileReader(filename);
@@ -67,7 +67,7 @@ public class FileControling {
 		ArrayList<String> n1 = new ArrayList<>();
 		int i = 0;
 
-		String filename = "C:\\Users\\user\\Desktop\\SongData\\" + randomI
+		String filename = "C:\\Users\\5p\\Desktop\\SongData\\" + randomI
 				+ ".txt";
 
 		FileReader fr = new FileReader(filename);

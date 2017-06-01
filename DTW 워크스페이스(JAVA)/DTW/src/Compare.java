@@ -6,14 +6,12 @@ import java.util.ArrayList;
 
 public class Compare {
 
-	// seg_length_1000 == n2.size();
-	private final static int SEG_LENGTH_1000 = 1000;
-	public final static int SEG_LENGTH = SEG_LENGTH_1000 + (SEG_LENGTH_1000 / 3);
-	private final static int MIN_ERROR_RANGE = 5;
-	private int correctable[] = new int[SEG_LENGTH];
-
 	// I will move the compare 'Main'class's function to here
 	public double compareResult(int fileNumber, int n2[]) throws IOException {
+		int SEG_LENGTH_1000 = n2.length;
+		int SEG_LENGTH = SEG_LENGTH_1000 + (SEG_LENGTH_1000 / 3);
+		int MIN_ERROR_RANGE = 5;
+		int correctable[] = new int[SEG_LENGTH];
 		double result = -1.0;
 		FileControling fc = new FileControling();
 		ArrayList<String> n1 = fc.getN1List(fileNumber);
@@ -34,11 +32,11 @@ public class Compare {
 			// be smaller than SEG_LENGTH
 			if (SegLocation != 1)
 				for (int j = 0; j < SEG_LENGTH; j++, i++) {
-					segmentedN1[j] = Integer.parseInt((String) n1.get(i));
+					segmentedN1[j] = (int)Float.parseFloat((String) n1.get(i));
 				}
 			else {
 				for (int j = 0; j < SEG_LENGTH_1000; j++, i++) {
-					segmentedN1_1000[j] = Integer.parseInt((String) n1.get(i));
+					segmentedN1_1000[j] = (int)Float.parseFloat((String) n1.get(i));
 				}
 			}
 			// to store again (about seg_length/3 size) at next turn...
@@ -86,7 +84,7 @@ public class Compare {
 				tmpi = i;
 				//temporary, I set tmpi boundary
 				for (int j = 0; j < SEG_LENGTH_1000 &&tmpi<n1.size(); j++, tmpi++) {
-					segmentedN1_1000[j] = Integer.parseInt((String) n1.get(tmpi));
+					segmentedN1_1000[j] = (int)Float.parseFloat((String) n1.get(tmpi));
 				}
 				// check similarity by DTW
 				DTW2 dtw1 = new DTW2(segmentedN1_1000, n2);
@@ -103,8 +101,9 @@ public class Compare {
 		result = min2;
 		return result;
 	}
-
+/*
 	int[] getCorrectable() {
 		return correctable;
 	}
+	*/
 }

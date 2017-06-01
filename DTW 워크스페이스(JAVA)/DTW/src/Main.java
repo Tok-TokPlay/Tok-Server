@@ -6,30 +6,28 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 
 public class Main {
-	private final static int TXT = 10;
+	private final static int TXT = 2;
 
-	public static int[] getUserBeat(String[] s) {
-		int[] n2 = new int[s.length];
-		for (int i = 0; i < s.length; i++)
-			n2[i] = Integer.parseInt(s[i]);
+	public static int[] getUserBeat(String args) {
+		int[] n2 = new int[args.length()];
+		for (int i = 0; i < args.length(); i++)
+			n2[i] = Integer.parseInt(Character.toString(args.charAt(i)));
 		return n2;
 
 	}
 
 	public static void main(String[] args) throws IOException {
 		int[] n2 = new int[args.length];
-		for (int k = 0; k < 10; k++) {
 			double value;
 			int minI = -1;
-			double minInt = 9999999;
+			double minInt = 99999999;
 
 			Compare c = new Compare();
 
-			n2 = Main.getUserBeat(args);
+			n2 = Main.getUserBeat(args[0]);
 			for (int i = 0; i < TXT; i++) {
 				// System.out.println();
 				value = c.compareResult(i, n2);
-				System.out.println(i + "'s min value is " + value);
 
 				if (minInt > value) {
 					minInt = value;
@@ -43,7 +41,6 @@ public class Main {
 				 * j++) { if (minInt[j] > value) { minInt[j] = value; minArr[j]
 				 * = i; break; } } }
 				 */
-			}
 			/*
 			 * for (int j = 0; j < 3; j++) { if (fc.getN2File() == minArr[j]) {
 			 * correct++; break; } }
