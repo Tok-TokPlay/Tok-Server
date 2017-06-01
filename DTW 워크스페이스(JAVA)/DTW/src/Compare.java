@@ -15,11 +15,8 @@ public class Compare {
 	// I will move the compare 'Main'class's function to here
 	double compareResult(int fileNumber, int n2[]) throws IOException {
 		double result = -1.0;
-		int num;
-		String filename = "C:\\Users\\4F\\Desktop\\SongData2\\" + fileNumber+ ".txt";
-		BufferedReader in = new BufferedReader(new FileReader(filename) );
 		FileControling fc = new FileControling();
-		ArrayList n1 = fc.getN1List(fileNumber);
+		ArrayList<String> n1 = fc.getN1List(fileNumber);
 		int segmentedN1[] = new int[SEG_LENGTH];
 		int segmentedN1_1000[] = new int[SEG_LENGTH_1000];
 		int segSize = n1.size() / SEG_LENGTH_1000;

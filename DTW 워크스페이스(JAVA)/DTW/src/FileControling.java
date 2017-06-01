@@ -19,20 +19,12 @@ public class FileControling {
 	// This should be deleted in a jarFile@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 	private static final int n2Size = 1000;
 
-	BufferedReader openReader(int fileNum) throws FileNotFoundException {
-		String filename = "C:\\Users\\4F\\Desktop\\SongData2\\" + fileNum
-				+ ".txt";
-		// read file and store at Buffer
-		BufferedReader in = new BufferedReader(new FileReader(filename));
-		return in;
-	}
-
 	void randomMapping(int numOfFile) throws IOException {
 		int arr[] = new int[1000];
 		Random rand = new Random();
 
 		for (int i = 0; i < numOfFile; i++) {
-			String filename = "C:\\Users\\4F\\Desktop\\SongData2\\" + i
+			String filename = "C:\\Users\\user\\Desktop\\SongData\\" + i
 					+ ".txt";
 			File file = new File(filename);
 			file.createNewFile();
@@ -51,17 +43,17 @@ public class FileControling {
 		}
 	}
 
-	ArrayList getN1List(int fileNum) throws IOException {
-		StringTokenizer token;
+	ArrayList<String> getN1List(int fileNum) throws IOException {
 		String temp;
-		ArrayList n1 = new ArrayList();
-		String filename = "C:\\Users\\4F\\Desktop\\SongData2\\" + fileNum
+		ArrayList<String> n1 = new ArrayList<String>();
+		String filename = "C:\\Users\\user\\Desktop\\SongData\\" + fileNum
 				+ ".txt";
 		// read file and store at Buffer
 		BufferedReader in = new BufferedReader(new FileReader(filename));
 		while ((temp = in.readLine()) != null) { // read one by one
 			n1.add(temp);
 		}
+		in.close();
 		return n1;
 
 	}
@@ -78,7 +70,7 @@ public class FileControling {
 		ArrayList<String> arrayList = new ArrayList<>();
 		int i = 0;
 
-		String filename = "C:\\Users\\4F\\Desktop\\SongData2\\" + randomI
+		String filename = "C:\\Users\\user\\Desktop\\SongData\\" + randomI
 				+ ".txt";
 		// String filename = randomI+".txt";
 		// read file and store at Buffer
@@ -100,7 +92,6 @@ public class FileControling {
 
 		while ((temp = in.readLine()) != null&&i<n2Size) { // read one by one
 			n2[i++] = Integer.parseInt(temp);
-			System.out.println(temp);
 		}
 		in.close(); // 파일 스트림 닫기
 
