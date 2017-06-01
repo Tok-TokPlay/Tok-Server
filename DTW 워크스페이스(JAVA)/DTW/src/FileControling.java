@@ -14,7 +14,6 @@ import java.util.StringTokenizer;
 
 public class FileControling {
 
-	private String filename;
 	private int n2File;
 	// This should be deleted in a jarFile@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 	private static final int n2Size = 1000;
@@ -49,50 +48,43 @@ public class FileControling {
 		String filename = "C:\\Users\\user\\Desktop\\SongData\\" + fileNum
 				+ ".txt";
 		// read file and store at Buffer
-		BufferedReader in = new BufferedReader(new FileReader(filename));
+		FileReader fr = new FileReader(filename);
+		BufferedReader in = new BufferedReader(fr);
 		while ((temp = in.readLine()) != null) { // read one by one
 			n1.add(temp);
 		}
+		fr.close();
 		in.close();
 		return n1;
 
 	}
-
+//Not Use when execute in the jar file... (for testing only)
 	int[] getN2(int numOfFile) throws IOException {
 
 		Random rand = new Random();
 		int randomI = rand.nextInt(numOfFile);
-		int length = n2Size;
-		char[] tmp = new char[1000];
 		int[] n2 = new int[n2Size];
-		ArrayList n1 = new ArrayList();
-		StringTokenizer token;
-		ArrayList<String> arrayList = new ArrayList<>();
+		ArrayList<String> n1 = new ArrayList<>();
 		int i = 0;
 
 		String filename = "C:\\Users\\user\\Desktop\\SongData\\" + randomI
 				+ ".txt";
-		// String filename = randomI+".txt";
-		// read file and store at Buffer
-		BufferedReader in = new BufferedReader(new FileReader(filename));
+
+		FileReader fr = new FileReader(filename);
+		BufferedReader in = new BufferedReader(fr);
 		n1 = getN1List(randomI);
-		System.out.println(n1.size());
 		int roundBound = n1.size() - n2.length;
 		int pass = rand.nextInt(roundBound);
-		System.out.println("pass : " + pass);
 		String temp = null;
 		// for pass several integer (random amount)
-		System.out.println("n2__________");
-		int count=0;
 		while (pass > 0 && (temp = in.readLine()) != null) {// read one line
 			pass--;
-			//System.out.println(count++);
-			// System.out.println(temp+"_________________________");
 		}
 
 		while ((temp = in.readLine()) != null&&i<n2Size) { // read one by one
 			n2[i++] = Integer.parseInt(temp);
 		}
+		fr.close();
 		in.close(); // 파일 스트림 닫기
 
 		n2File = randomI;
