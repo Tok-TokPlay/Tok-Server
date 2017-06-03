@@ -1,5 +1,6 @@
 /**
  * @author Jin Hee Park, Hyun Joon Choi
+ * @param IP, Port : for communication.
  */
 
 import java.io.BufferedReader;
