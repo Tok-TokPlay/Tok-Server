@@ -25,7 +25,7 @@ public class TCPServer implements Runnable {
 		// Basic Constructor : Do nothing.
 		super();
 		// Set Default values into configure class.
-		setConfigValue(new TCPConfig("165.194.17.11", 8801, ""));
+		setConfigValue(new TCPConfig("165.194.17.11", 8801, "DB\\"));
 	}
 	public TCPServer(String newIP, int newPort, String newDirectory){
 		setConfigValue(new TCPConfig(newIP, newPort, newDirectory));
@@ -60,8 +60,12 @@ public class TCPServer implements Runnable {
 					
 					if (userBeat.size() > 0) {
 						System.out.println("TCPServer" + " Receive : " + sUserBeat);
-						String command = "C:\\Users\\5p\\Desktop\\Tok-Server-hee\\Tok-Server-hee\\Test.bat " +sUserBeat;
+						// Test.bat file will doing Searching algorithm.
+						// Test.bat can change with Server-side OS Envinronment.
+						String command = getConfigValue().getDbDirectory() + "Test.bat" + sUserBeat;
 						Process proc = Runtime.getRuntime().exec(command);
+						
+						// get Inputstream with sub shell system.
 						InputStreamReader isr = new InputStreamReader(proc.getInputStream());
 						BufferedReader br = new BufferedReader(isr);
 
