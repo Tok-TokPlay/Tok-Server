@@ -18,17 +18,19 @@ public class TokServer {
 			System.out.println("Please input in order with IP, Port, DB_Directory please...");
 			return 0;
 		}
-		
+		listenClient();
+		serverInput();
 		return 0;
 	}
 	
-	private void listenClient(){
+	private static void listenClient(){
 		// Listen and find music at DB.
-		Thread desktopServerThread = new Thread(new TCPServer(serverConfig, musicDB));
-		desktopServerThread.start();
+		Thread listeningThread = new Thread(new TCPServer(serverConfig, musicDB));
+		listeningThread.start();
 	}
-	
-	private void addMusic(String musicName, String musicSinger, String fileName)	{
-		musicDB.addMusic(musicName, musicSinger, fileName);
+	private static void serverInput()	{
+		// Server administration start.
+		Thread inputingThread = new Thread(new TCPServer(serverConfig, musicDB));
+		inputingThread.start();
 	}
 }
