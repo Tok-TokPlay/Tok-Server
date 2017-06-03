@@ -7,90 +7,80 @@ import java.sql.Statement;
 public class MusicDataBase {
 	private Connection connection;
 	private Statement statement;
-	private ResultSet resultSet;
 	
+	// SQL Database`s Data.
 	private String driverName = "com.mysql.jdbc.Driver";
 	private String url = "jdbc:mysql://localhost:3306/o2";
 	private String user = "root";
 	private String password = "js1112";
 	
-	public MusicDataBase(String musicNum){
-		try{
-			Class.forName(driverName);
-			connection = DriverManager.getConnection(url, user, password);
-			
-			statement = connection.createStatement();
-			
-			/*insert ����
-			if(funcName.equals("INSERT")){
-				Scanner scan = new Scanner(System.in);
-				String music;
-				String singer;
-				
-				music = scan.nextLine();
-				
-				singer = scan.nextLine();
-				
-				String sql = "INSERT INTO toktok(music, singer) VALUES ('" + music + "', '" + singer + "')";
-				statement.executeUpdate(sql);
-			}	
-			
-			else if(funcName.equals("DELETE")){
-				Scanner scan = new Scanner(System.in);
-				String musicKey = scan.nextLine();
-				String sql = "DELETE FROM toktok WHERE musicKey=" + musicKey + ";";
-				statement.executeUpdate(sql);
-			}*/
-			
-			//else if(funcName.equals("SELECT")){//
-				String sql = "SELECT * FROM toktok WHERE musicKey=" + musicNum + ";";
-				resultSet = statement.executeQuery(sql);
-				while(resultSet.next()){
-					String musicKey = resultSet.getString("musicKey");
-					String music = resultSet.getString("music");
-					String singer = resultSet.getString("singer");
-					//retuVal = music + "66" + singer;
-					
-				}
-		//	}//
-			
-			
-		}catch (ClassNotFoundException e){
-			System.out.println("[�ε� ����]\n" + e.getStackTrace());
-		}
-		catch (SQLException e){
-			System.out.println("[���� ����]\n" +  e.getStackTrace());
-		}
-		catch(Exception e){
-			System.out.println(e.toString());
-		}
+	public MusicDataBase() throws ClassNotFoundException, SQLException{
+		Class.forName(driverName);
+		// Add class driverName into RAM.
+		// We can use this class after this code.
+		connection = DriverManager.getConnection(url, user, password);
+		statement = connection.createStatement();
+		// Make connection with Database finished.
 	}
+	
 	public String getMusicName(String key){
+		// Get music name with key value ( fileName ).
+		ResultSet resultSet;
 		String musicName = "";
+		String sql = "SELECT * FROM toktok WHERE file=" + key + ";";
+		try {
+			// Get Value with given SQL Query at statement.
+			resultSet = statement.executeQuery(sql);
+			// Get music name from result.
+			musicName = resultSet.getString("music");
+			resultSet.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 		return musicName;
 	}
+	
 	public String getMusicSinger(String key){
+		// Get music singer with key value ( fileName ).
+		ResultSet resultSet;
 		String musicSinger = "";
+		String sql = "SELECT * FROM toktok WHERE file=" + key + ";";
+		try {
+			// Get Value with given SQL Query at statement.
+			resultSet = statement.executeQuery(sql);
+			// Get music singer from result.
+			musicSinger = resultSet.getString("singer");
+			resultSet.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 		return musicSinger;
-		
+	}
+	
+	public void addMusic(String musicName, String musicSinger, String fileName ) {
+		// append new music table to toktok entity.
+		// entity have 3 attribute, name, singer, file name ( which is key value for musics. )
+		String sql = "INSERT INTO toktok(music, singer, file) VALUES ('" + musicName + "', '" + musicSinger + "', '" + fileName + "')";
+		try {
+			statement.executeUpdate(sql);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void initTable()	{
+		// Initialize table if beatract python module`s version is changed.
 	}
 	
 	public void closeDatabase()
 	{
+		// Closing opened database controller.
 		try{
-			if( connection != null ){
-				connection.close();
-			}
-			
-			if( statement != null ){
-				statement.close();
-			}
-			
-			if( resultSet != null ){
-				resultSet.close();
-			}
+			// under values are always on.
+			connection.close();
+			statement.close();
 		}catch (SQLException e){
-			System.out.println("[�ݱ� ����]\n" +  e.getStackTrace());
+			e.getStackTrace();
 		}
 	}
 }
