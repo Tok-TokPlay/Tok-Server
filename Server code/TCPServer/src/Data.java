@@ -2,7 +2,11 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 public class Data implements Serializable {
-    ArrayList<Integer> userBeat = new ArrayList<>();
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 878194L;
+	ArrayList<Integer> userBeat = new ArrayList<>();
     public ArrayList<Integer> getList(){
         return userBeat;
     }
