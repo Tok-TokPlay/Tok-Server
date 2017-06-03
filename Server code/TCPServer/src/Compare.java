@@ -7,13 +7,12 @@ import java.util.ArrayList;
 import java.util.StringTokenizer;
 
 public class Compare {
-
 	private final static int SEG_LENGTH_1000 = 1000;	//segment the N1(original array) with size 1000
 	public final static int SEG_LENGTH = SEG_LENGTH_1000 + (SEG_LENGTH_1000 / 3);
 	private final static int MIN_ERROR_RANGE = 5;
 	private int correctable[] = new int[SEG_LENGTH];
 
-	// I will move the compare 'Main'class's function to here
+	// I will move the compare 'Main'class's function to here.
 	double compare(int fileNumber, ArrayList<Integer> n2ArrayList) throws IOException {
 		double result = -1.0;
 		int num;
@@ -23,18 +22,18 @@ public class Compare {
 		FileReader reader = new FileReader(filename);
 		ArrayList<String> arrayList = new ArrayList<>();
 		
-			   BufferedReader in  = new BufferedReader(new FileReader(filename)); //파일로부터 데이터를 읽어 버퍼에 저장
+			   BufferedReader in  = new BufferedReader(new FileReader(filename));
 			   
 			   String temp;
 			   
-			   while ((temp = in.readLine()) != null) { //한 줄씩 읽기
-			    token = new StringTokenizer(temp, ",");  //공백 단위로 끊기 
-			    for (int i = 0; token.hasMoreTokens(); i++) { //한 줄에 있는 단어 수만큼 
-			     arrayList.add(token.nextToken()); //복사하여 쓰기 
+			   while ((temp = in.readLine()) != null) {
+			    token = new StringTokenizer(temp, ",");
+			    for (int i = 0; token.hasMoreTokens(); i++) { 
+			     arrayList.add(token.nextToken());
 			     System.out.println(arrayList.get(i));
 			    }
 			   }
-			   in.close();  //파일 스트림 닫기
+			   in.close();
 
 		int segmentedN1[] = new int[SEG_LENGTH];
 		int segmentedN1_1000[] = new int[SEG_LENGTH_1000];
@@ -92,15 +91,12 @@ public class Compare {
 		double min2 = 100;
 		for (int l = 0; l < MIN_ERROR_RANGE; l++) {
 			int k = 0;
-			i = (segSize - minSegArr[l] - 1) * SEG_LENGTH_1000 + (SEG_LENGTH_1000 / 3); // 3등분해서
-			// 지나감
+			i = (segSize - minSegArr[l] - 1) * SEG_LENGTH_1000 + (SEG_LENGTH_1000 / 3);
 			// Because the 'minSegArr == 1' means the last segment of the
 			// n1.
 			if (minSegArr[l] == 1) {
 				k = 2; // Do this 'for'loop just 3 time!
-			} else if (minSegArr[l] == segSize) { // if the similarity part
-													// is the first segment
-													// of the n1.
+			} else if (minSegArr[l] == segSize) { // if the similarity part is the first segment of the n1.
 				k = 2;
 				i = 0;
 			}

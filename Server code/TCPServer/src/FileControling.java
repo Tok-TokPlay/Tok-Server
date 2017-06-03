@@ -1,12 +1,7 @@
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.nio.CharBuffer;
-import java.nio.file.*;
 import java.util.Random;
 public class FileControling {
 
