@@ -1,5 +1,5 @@
 /**
- * Created by ¹ÚÁøÈñ on 2017-05-24.
+ * @author Jin Hee Park, Hyun Joon Choi
  */
 
 import java.io.BufferedReader;
@@ -8,32 +8,43 @@ import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
-import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 
 public class TCPServer implements Runnable {
-
-	public static final int ServerPort = 9797;
-	public static final String ServerIP = "165.194.17.11";
-	ArrayList<Integer> userBeat = new ArrayList<>();
+	// Port and IP can be changed. DO NOT ASSIGN IT CONSTANT.
+	public static int serverPort = 9797;
+	public static String serverIP = "165.194.17.11";
+	
+	// User beat and other value must be private, because of prevent data collapse.
+	private ArrayList<Integer> userBeat = new ArrayList<>();
 	private String musicKey = null;
 	private String musicInfo ="";
-
+	
+	public TCPServer()	{
+		super();
+		// Basic Constructor : Do nothing.
+	}
+	
+	public TCPServer(String newIP){
+		// at start of program, newIP is assigned to Runnable Object.
+		TCPServer.serverIP = newIP;
+	}
+	
 	@Override
 	public void run() {
 		String receiveData;
 
 		try {       
 			System.out.println("S: Connecting...");
-			ServerSocket serverSocket = new ServerSocket(ServerPort);
+			ServerSocket serverSocket = new ServerSocket(serverPort);
 
 			while (true) {
 				Socket client = serverSocket.accept();
 				System.out.println("S: Receiving...");
 				try {
-					// ¼ö½ÅºÎ
+					// ï¿½ï¿½ï¿½Åºï¿½
 					InputStream is = client.getInputStream();
 					ObjectInputStream ois = new ObjectInputStream(is);
 
@@ -46,9 +57,9 @@ public class TCPServer implements Runnable {
 					}
 					System.out.println(sUserBeat);
 					if (userBeat.size() > 0) {
-						// È®ÀÎ¿ë
+						// È®ï¿½Î¿ï¿½
 						System.out.println("TCPServer" + " Receive : " + sUserBeat);
-						// Àü¼Û¹ÞÀº µ¥ÀÌÅÍ Ã³¸® : batch ÆÄÀÏ ½ÇÇàÇÑ´Ù.
+						// ï¿½ï¿½ï¿½Û¹ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Ã³ï¿½ï¿½ : batch ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ñ´ï¿½.
 						String command = "C:\\Users\\5p\\Desktop\\Tok-Server-hee\\Tok-Server-hee\\Test.bat " +sUserBeat;
 						Process proc = Runtime.getRuntime().exec(command);
 						InputStreamReader isr = new InputStreamReader(proc.getInputStream());
@@ -58,7 +69,7 @@ public class TCPServer implements Runnable {
 							JDBCexam j =new JDBCexam(musicKey);
 							musicInfo=j.getRetuVal();
 							
-							System.out.println("musicÁ¤º¸" +musicInfo+ "\n");
+							System.out.println("musicï¿½ï¿½ï¿½ï¿½" +musicInfo+ "\n");
 						}
 						
 
@@ -67,16 +78,16 @@ public class TCPServer implements Runnable {
 					}
 				//	Thread.sleep(50);
 
-					// ¼Û½ÅºÎ
+					// ï¿½Û½Åºï¿½
 
 					OutputStream os = client.getOutputStream();
 					ObjectOutputStream oos = new ObjectOutputStream(os);
 
 					if ((receiveData = musicInfo) != null) {
 
-						oos.writeObject("¡æ" + receiveData);
+						oos.writeObject("ï¿½ï¿½" + receiveData);
 						oos.flush();
-						System.out.println("Å¬¶óÀÌ¾ðÆ®¿¡°Ô º¸³Â½À´Ï´Ù....");
+						System.out.println("Å¬ï¿½ï¿½ï¿½Ì¾ï¿½Æ®ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Â½ï¿½ï¿½Ï´ï¿½....");
 					}
 					is.close();
 					ois.close();
@@ -100,6 +111,5 @@ public class TCPServer implements Runnable {
 	public static void main(String[] arg) {
 		Thread desktopServerThread = new Thread(new TCPServer());
 		desktopServerThread.start();
-
 	}
 }
