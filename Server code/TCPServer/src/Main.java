@@ -34,7 +34,8 @@ public class Main {
 			 */
 			for (int i = 0; i < TXT; i++) {
 				// System.out.println();
-				value = c.compareResult(i, n2);
+				//value = c.compareResult(i, n2);
+				value = 3;
 				System.out.println(i + "'s min value is " + value);
 				/*
 				 * if (value == 0) { correctable = c.getCorrectable();

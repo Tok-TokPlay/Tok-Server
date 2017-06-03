@@ -19,45 +19,45 @@ public class JDBCexam {
 	
 	public JDBCexam(String musicNum){
 		try{
-			// ¨ç ·Îµå
+			// ï¿½ï¿½ ï¿½Îµï¿½
 			Class.forName(driverName);
-			//System.out.println("·Îµå ¼º°ø");
-			// ¨è ¿¬°á
+			//System.out.println("ï¿½Îµï¿½ ï¿½ï¿½ï¿½ï¿½");
+			// ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 			connection = DriverManager.getConnection(url, user, password);
-			//System.out.println("¿¬°á ¼º°ø");
+			//System.out.println("ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½");
 			
-			//Statement ¾ò±â
+			//Statement ï¿½ï¿½ï¿½
 			statement = connection.createStatement();
-			//System.out.println("statement ¹ÞÀ½");
+			//System.out.println("statement ï¿½ï¿½ï¿½ï¿½");
 			
-			/*insert ½ÇÇà
+			/*insert ï¿½ï¿½ï¿½ï¿½
 			if(funcName.equals("INSERT")){
 				Scanner scan = new Scanner(System.in);
 				String music;
 				String singer;
 				
-				System.out.println("music¸íÀ» ÀÔ·ÂÇØÁÖ¼¼¿ä");
+				System.out.println("musicï¿½ï¿½ï¿½ï¿½ ï¿½Ô·ï¿½ï¿½ï¿½ï¿½Ö¼ï¿½ï¿½ï¿½");
 				music = scan.nextLine();
 				
-				System.out.println("°¡¼ö¸íÀ» ÀÔ·ÂÇØÁÖ¼¼¿ä");
+				System.out.println("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ô·ï¿½ï¿½ï¿½ï¿½Ö¼ï¿½ï¿½ï¿½");
 				singer = scan.nextLine();
 				
 				String sql = "INSERT INTO toktok(music, singer) VALUES ('" + music + "', '" + singer + "')";
 				statement.executeUpdate(sql);
-				System.out.println("insert ½ÇÇà");
+				System.out.println("insert ï¿½ï¿½ï¿½ï¿½");
 			}	
 			
-			//Delete ½ÇÇà
+			//Delete ï¿½ï¿½ï¿½ï¿½
 			else if(funcName.equals("DELETE")){
 				Scanner scan = new Scanner(System.in);
-				System.out.println("¸î ¹ø¤Š Å°°ªÀ» »èÁ¦ÇÒ·¡?");
+				System.out.println("ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ Å°ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ò·ï¿½?");
 				String musicKey = scan.nextLine();
 				String sql = "DELETE FROM toktok WHERE musicKey=" + musicKey + ";";
 				statement.executeUpdate(sql);
-				System.out.println(musicKey + " ¹ø¤Š °ªÀÌ »èÁ¦µÇ¾ú½À´Ï´Ù.");
+				System.out.println(musicKey + " ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ç¾ï¿½ï¿½ï¿½ï¿½Ï´ï¿½.");
 			}*/
 			
-			//select ½ÇÇà
+			//select ï¿½ï¿½ï¿½ï¿½
 			//else if(funcName.equals("SELECT")){//
 				String sql = "SELECT * FROM toktok WHERE musicKey=" + musicNum + ";";
 				resultSet = statement.executeQuery(sql);
@@ -72,10 +72,10 @@ public class JDBCexam {
 			
 			
 		}catch (ClassNotFoundException e){
-			System.out.println("[·Îµå ¿À·ù]\n" + e.getStackTrace());
+			System.out.println("[ï¿½Îµï¿½ ï¿½ï¿½ï¿½ï¿½]\n" + e.getStackTrace());
 		}
 		catch (SQLException e){
-			System.out.println("[¿¬°á ¿À·ù]\n" +  e.getStackTrace());
+			System.out.println("[ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½]\n" +  e.getStackTrace());
 		}
 		catch(Exception e){
 			System.out.println(e.toString());
@@ -86,9 +86,6 @@ public class JDBCexam {
 	public String getRetuVal() {
 		return retuVal;
 	}
-
-
-
 
 	public void closeDatabase()
 	{
@@ -105,7 +102,7 @@ public class JDBCexam {
 				resultSet.close();
 			}
 		}catch (SQLException e){
-			System.out.println("[´Ý±â ¿À·ù]\n" +  e.getStackTrace());
+			System.out.println("[ï¿½Ý±ï¿½ ï¿½ï¿½ï¿½ï¿½]\n" +  e.getStackTrace());
 		}
 	}
 }
