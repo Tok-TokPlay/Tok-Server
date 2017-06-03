@@ -1,5 +1,6 @@
 /**
- * Created by 박진희 on 2017-05-24.
+ * @author Jin Hee Park, Hyun Joon Choi
+ * @param IP, Port : for communication.
  */
 
 import java.io.BufferedReader;
@@ -8,98 +9,122 @@ import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
-import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.ArrayList;
 
 public class TCPServer implements Runnable {
-
-	public static final int ServerPort = 9797;
-	public static final String ServerIP = "165.194.17.11";
-	ArrayList<Integer> userBeat = new ArrayList<>();
-	private String musicKey = null;
-	private String musicInfo ="";
-
+	// Port and IP can be changed. DO NOT ASSIGN IT CONSTANT.
+	private TCPConfig configValue;
+	
+	// Database class for search music.
+	private MusicDataBase database;
+	
+	private final static int USER_TIMEOUT = 500;
+	
+	// Constructor part
+	// Do not make default constructor, because of target Database. 
+	public TCPServer(MusicDataBase database)	{
+		super();
+		// Set Default values into configure class and database.
+		setConfigValue(new TCPConfig("165.194.17.11", 8801, "DB\\"));
+		this.setDatabase(database);
+	}
+	
+	public TCPServer(String newIP, int newPort, String newDirectory, MusicDataBase database){
+		super();
+		// Set Input parameter values into configure class and database.
+		setConfigValue(new TCPConfig(newIP, newPort, newDirectory));
+		this.setDatabase(database);
+	}
+	public TCPServer(TCPConfig serverConfig, MusicDataBase database){
+		super();
+		// Set Input parameter values into configure class and database.
+		setConfigValue(serverConfig);
+		this.setDatabase(database);
+	}
+	
 	@Override
 	public void run() {
-		String receiveData;
-
 		try {       
-			System.out.println("S: Connecting...");
-			ServerSocket serverSocket = new ServerSocket(ServerPort);
-
+			//Print now IP and Port.
+			System.out.println("Server: Connecting with IP:[" + configValue.getIp() + "]:[" + configValue.getPort() + "]");
+			//Make Connection with server.
+			ServerSocket serverSocket = new ServerSocket(configValue.getPort());
+			
 			while (true) {
+				System.out.println("Server: Waiting with IP:[" + configValue.getIp() + "]:[" + configValue.getPort() + "]");
+				// Make socket for one client.
 				Socket client = serverSocket.accept();
-				System.out.println("S: Receiving...");
+				System.out.println("Server: Receiving from port..." + client.getPort());
+				
 				try {
-					// 수신부
 					InputStream is = client.getInputStream();
 					ObjectInputStream ois = new ObjectInputStream(is);
 
-					Data d = (Data) ois.readObject();
-					userBeat = (ArrayList<Integer>) d.getList();
+					// Read Input Socket Stream and change into String User beat.
+					Data inputData = (Data)ois.readObject();
+					String sUserBeat = inputData.toString();
 					
-					String sUserBeat ="";
-					for(int i=0;i<userBeat.size();i++){
-						sUserBeat+=userBeat.get(i).toString();
-					}
-					System.out.println(sUserBeat);
-					if (userBeat.size() > 0) {
-						// 확인용
-						System.out.println("TCPServer" + " Receive : " + sUserBeat);
-						// 전송받은 데이터 처리 : batch 파일 실행한다.
-						String command = "C:\\Users\\5p\\Desktop\\Tok-Server-hee\\Tok-Server-hee\\Test.bat " +sUserBeat;
-						Process proc = Runtime.getRuntime().exec(command);
-						InputStreamReader isr = new InputStreamReader(proc.getInputStream());
-						BufferedReader br = new BufferedReader(isr);
-
-						if ((musicKey = br.readLine()) != null) {
-							JDBCexam j =new JDBCexam(musicKey);
-							musicInfo=j.getRetuVal();
-							
-							System.out.println("music정보" +musicInfo+ "\n");
-						}
+					// command would "$SERVER_PATH\\Test.bat $NOW_PATH\\Search.jar + USER_BEAT".
+					System.out.println("Server: Search is processing from port..." + client.getPort());
+					String command = getConfigValue().getDbDirectory() + "Test.bat" + System.getProperty("user.dir")+"Search.jar" + sUserBeat;
+					Process proc = Runtime.getRuntime().exec(command);
+					
+					// get Input Stream with sub shell system.
+					InputStreamReader isr = new InputStreamReader(proc.getInputStream());
+					BufferedReader br = new BufferedReader(isr);
+					
+					// Read music key value from sub-shell.
+					String musicKey = br.readLine();
+					if (musicKey!= null) {
+						String musicName = database.getMusicName(musicKey);
+						String musicSinger = database.getMusicSinger(musicKey);
 						
-
-					} else {
-
+						// Music name for music key value is always exist.
+						// Not need to check if this value is null.
+						
+						// Output to client ( Android ).
+						OutputStream os = client.getOutputStream();
+						ObjectOutputStream oos = new ObjectOutputStream(os);
+						
+						// Give music name and singer with parsing comment "^^".
+						oos.writeObject(musicName + "^^" + musicSinger);
+						
+						// Close not using stream controller.
+						os.close();
+						oos.close();
 					}
-				//	Thread.sleep(50);
-
-					// 송신부
-
-					OutputStream os = client.getOutputStream();
-					ObjectOutputStream oos = new ObjectOutputStream(os);
-
-					if ((receiveData = musicInfo) != null) {
-
-						oos.writeObject("→" + receiveData);
-						oos.flush();
-						System.out.println("클라이언트에게 보냈습니다....");
-					}
+					// Close not using stream controller.
 					is.close();
 					ois.close();
-					os.close();
-					oos.close();
-
-				} catch (Exception e) {
-					System.out.println("S: Error");
+				} 
+				catch (Exception e) {
 					e.printStackTrace();
-				} finally {
+				} 
+				finally {
 					client.close();
-					System.out.println("S: Done.");
+					serverSocket.close();
+					System.out.println("Server: Give music information to client is done from port..."  + client.getPort());
 				}
+				// Input user`s request 0.5 seconds per once.
+				Thread.sleep(USER_TIMEOUT);
 			}
-		} catch (Exception e) {
-			System.out.println("S: Error");
+		} 
+		catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 
-	public static void main(String[] arg) {
-		Thread desktopServerThread = new Thread(new TCPServer());
-		desktopServerThread.start();
-
+	public TCPConfig getConfigValue() {
+		return configValue;
+	}
+	public void setConfigValue(TCPConfig configValue) {
+		this.configValue = configValue;
+	}
+	public MusicDataBase getDatabase() {
+		return database;
+	}
+	public void setDatabase(MusicDataBase database) {
+		this.database = database;
 	}
 }
