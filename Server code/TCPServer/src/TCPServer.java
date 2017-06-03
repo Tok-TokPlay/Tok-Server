@@ -19,6 +19,8 @@ public class TCPServer implements Runnable {
 	// Database class for search music.
 	private MusicDataBase database;
 	
+	private final static int USER_TIMEOUT = 500;
+	
 	// Constructor part
 	// Do not make default constructor, because of target Database. 
 	public TCPServer(MusicDataBase database)	{
@@ -50,6 +52,7 @@ public class TCPServer implements Runnable {
 			ServerSocket serverSocket = new ServerSocket(configValue.getPort());
 			
 			while (true) {
+				System.out.println("Server: Waiting with IP:[" + configValue.getIp() + "]:[" + configValue.getPort() + "]");
 				// Make socket for one client.
 				Socket client = serverSocket.accept();
 				System.out.println("Server: Receiving from port..." + client.getPort());
@@ -103,6 +106,8 @@ public class TCPServer implements Runnable {
 					serverSocket.close();
 					System.out.println("Server: Give music information to client is done from port..."  + client.getPort());
 				}
+				// Input user`s request 0.5 seconds per once.
+				Thread.sleep(USER_TIMEOUT);
 			}
 		} 
 		catch (Exception e) {
