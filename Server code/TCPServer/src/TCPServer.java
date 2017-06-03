@@ -34,6 +34,12 @@ public class TCPServer implements Runnable {
 		setConfigValue(new TCPConfig(newIP, newPort, newDirectory));
 		this.setDatabase(database);
 	}
+	public TCPServer(TCPConfig serverConfig, MusicDataBase database){
+		super();
+		// Set Input parameter values into configure class and database.
+		setConfigValue(serverConfig);
+		this.setDatabase(database);
+	}
 	
 	@Override
 	public void run() {
@@ -46,7 +52,7 @@ public class TCPServer implements Runnable {
 			while (true) {
 				// Make socket for one client.
 				Socket client = serverSocket.accept();
-				System.out.println("Server: Receiving...");
+				System.out.println("Server: Receiving from port..." + client.getPort());
 				
 				try {
 					InputStream is = client.getInputStream();
@@ -57,6 +63,7 @@ public class TCPServer implements Runnable {
 					String sUserBeat = inputData.toString();
 					
 					// command would "$SERVER_PATH\\Test.bat $NOW_PATH\\Search.jar + USER_BEAT".
+					System.out.println("Server: Search is processing from port..." + client.getPort());
 					String command = getConfigValue().getDbDirectory() + "Test.bat" + System.getProperty("user.dir")+"Search.jar" + sUserBeat;
 					Process proc = Runtime.getRuntime().exec(command);
 					
@@ -94,7 +101,7 @@ public class TCPServer implements Runnable {
 				finally {
 					client.close();
 					serverSocket.close();
-					System.out.println("Server: Give music information to client is done.");
+					System.out.println("Server: Give music information to client is done from port..."  + client.getPort());
 				}
 			}
 		} 
@@ -109,11 +116,9 @@ public class TCPServer implements Runnable {
 	public void setConfigValue(TCPConfig configValue) {
 		this.configValue = configValue;
 	}
-
 	public MusicDataBase getDatabase() {
 		return database;
 	}
-
 	public void setDatabase(MusicDataBase database) {
 		this.database = database;
 	}
