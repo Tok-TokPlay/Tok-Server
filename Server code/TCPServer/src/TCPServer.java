@@ -11,32 +11,32 @@ import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.ArrayList;
 
 public class TCPServer implements Runnable {
 	// Port and IP can be changed. DO NOT ASSIGN IT CONSTANT.
 	private TCPConfig configValue;
 	
-	// User beat and other value must be private, because of prevent data collapse.
-	private ArrayList<Integer> userBeat = new ArrayList<>();
-	private String musicKey = null;
-	private String musicInfo ="";
+	// Database class for search music.
+	private MusicDataBase database;
 	
-	public TCPServer()	{
-		// Basic Constructor : Do nothing.
+	// Constructor part
+	// Do not make default constructor, because of target Database. 
+	public TCPServer(MusicDataBase database)	{
 		super();
-		// Set Default values into configure class.
+		// Set Default values into configure class and database.
 		setConfigValue(new TCPConfig("165.194.17.11", 8801, "DB\\"));
+		this.setDatabase(database);
 	}
-	public TCPServer(String newIP, int newPort, String newDirectory){
-		// Set Input parameter values into configure class.
+	
+	public TCPServer(String newIP, int newPort, String newDirectory, MusicDataBase database){
+		super();
+		// Set Input parameter values into configure class and database.
 		setConfigValue(new TCPConfig(newIP, newPort, newDirectory));
+		this.setDatabase(database);
 	}
 	
 	@Override
 	public void run() {
-		String receiveData;
-
 		try {       
 			//Print now IP and Port.
 			System.out.println("Server: Connecting with IP:[" + configValue.getIp() + "]:[" + configValue.getPort() + "]");
@@ -55,63 +55,66 @@ public class TCPServer implements Runnable {
 					// Read Input Socket Stream and change into String User beat.
 					Data inputData = (Data)ois.readObject();
 					String sUserBeat = inputData.toString();
-					String command = getConfigValue().getDbDirectory() + "Test.bat" + sUserBeat;
+					
+					// command would "$SERVER_PATH\\Test.bat $NOW_PATH\\Search.jar + USER_BEAT".
+					String command = getConfigValue().getDbDirectory() + "Test.bat" + System.getProperty("user.dir")+"Search.jar" + sUserBeat;
 					Process proc = Runtime.getRuntime().exec(command);
 					
 					// get Input Stream with sub shell system.
 					InputStreamReader isr = new InputStreamReader(proc.getInputStream());
 					BufferedReader br = new BufferedReader(isr);
 					
-					if ((musicKey = br.readLine()) != null) {
-						JDBCexam j = new JDBCexam(musicKey);
-						musicInfo=j.getRetuVal();
+					// Read music key value from sub-shell.
+					String musicKey = br.readLine();
+					if (musicKey!= null) {
+						String musicName = database.getMusicName(musicKey);
+						String musicSinger = database.getMusicSinger(musicKey);
 						
-						System.out.println("music����" +musicInfo+ "\n");
+						// Music name for music key value is always exist.
+						// Not need to check if this value is null.
+						
+						// Output to client ( Android ).
+						OutputStream os = client.getOutputStream();
+						ObjectOutputStream oos = new ObjectOutputStream(os);
+						
+						// Give music name and singer with parsing comment "^^".
+						oos.writeObject(musicName + "^^" + musicSinger);
+						
+						// Close not using stream controller.
+						os.close();
+						oos.close();
 					}
-					
-				//	Thread.sleep(50);
-
-					OutputStream os = client.getOutputStream();
-					ObjectOutputStream oos = new ObjectOutputStream(os);
-
-					if ((receiveData = musicInfo) != null) {
-
-						oos.writeObject("��" + receiveData);
-						oos.flush();
-						System.out.println("Ŭ���̾�Ʈ���� ���½��ϴ�....");
-					}
+					// Close not using stream controller.
 					is.close();
 					ois.close();
-					os.close();
-					oos.close();
-
 				} 
 				catch (Exception e) {
-					System.out.println("S: Error");
 					e.printStackTrace();
 				} 
 				finally {
 					client.close();
 					serverSocket.close();
-					System.out.println("S: Done.");
+					System.out.println("Server: Give music information to client is done.");
 				}
 			}
 		} 
 		catch (Exception e) {
-			System.out.println("S: Error");
 			e.printStackTrace();
 		}
 	}
 
-	public static void main(String[] arg) {
-		Thread desktopServerThread = new Thread(new TCPServer());
-		desktopServerThread.start();
-	}
-	
 	public TCPConfig getConfigValue() {
 		return configValue;
 	}
 	public void setConfigValue(TCPConfig configValue) {
 		this.configValue = configValue;
+	}
+
+	public MusicDataBase getDatabase() {
+		return database;
+	}
+
+	public void setDatabase(MusicDataBase database) {
+		this.database = database;
 	}
 }
