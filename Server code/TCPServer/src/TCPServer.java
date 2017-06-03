@@ -1,6 +1,3 @@
-package com.example.dkdk6.toktokplay.Activity;
-
-
 /**
  * Created by ¹ÚÁøÈñ on 2017-05-24.
  */

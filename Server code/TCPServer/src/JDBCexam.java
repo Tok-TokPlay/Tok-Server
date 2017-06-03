@@ -1,5 +1,3 @@
-package com.example.dkdk6.toktokplay.Activity;
-
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;

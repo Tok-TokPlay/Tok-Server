@@ -1,0 +1,6 @@
+Server Code\Client : 왜 있는건지 모르겠는 파일
+- 서버에 클라이언트가..?
+- Test 폴더로 옮기던지 아니면 삭제해도 될 것 같음!
+
+TCP Server : Server code 에 중복됨
+안드로이드 java파일 : java에도 activity가 있는지 모르겠지만 안쓰이는 것 같아서 삭제 부탁! 
