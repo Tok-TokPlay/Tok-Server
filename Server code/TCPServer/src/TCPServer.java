@@ -14,8 +14,7 @@ import java.util.ArrayList;
 
 public class TCPServer implements Runnable {
 	// Port and IP can be changed. DO NOT ASSIGN IT CONSTANT.
-	public static int serverPort = 9797;
-	public static String serverIP = "165.194.17.11";
+	private TCPConfig configValue;
 	
 	// User beat and other value must be private, because of prevent data collapse.
 	private ArrayList<Integer> userBeat = new ArrayList<>();
@@ -23,13 +22,13 @@ public class TCPServer implements Runnable {
 	private String musicInfo ="";
 	
 	public TCPServer()	{
-		super();
 		// Basic Constructor : Do nothing.
+		super();
+		// Set Default values into configure class.
+		setConfigValue(new TCPConfig("165.194.17.11", 8801, ""));
 	}
-	
-	public TCPServer(String newIP){
-		// at start of program, newIP is assigned to Runnable Object.
-		TCPServer.serverIP = newIP;
+	public TCPServer(String newIP, int newPort, String newDirectory){
+		setConfigValue(new TCPConfig(newIP, newPort, newDirectory));
 	}
 	
 	@Override
@@ -37,14 +36,17 @@ public class TCPServer implements Runnable {
 		String receiveData;
 
 		try {       
-			System.out.println("S: Connecting...");
-			ServerSocket serverSocket = new ServerSocket(serverPort);
-
+			//Print now IP and Port.
+			System.out.println("Server: Connecting with IP:[" + configValue.getIp() + "]:[" + configValue.getPort() + "]");
+			//Make Connection with server.
+			ServerSocket serverSocket = new ServerSocket(configValue.getPort());
+			
 			while (true) {
+				// Make socket for one client.
 				Socket client = serverSocket.accept();
-				System.out.println("S: Receiving...");
+				System.out.println("Server: Receiving...");
+				
 				try {
-					// ���ź�
 					InputStream is = client.getInputStream();
 					ObjectInputStream ois = new ObjectInputStream(is);
 
@@ -55,11 +57,9 @@ public class TCPServer implements Runnable {
 					for(int i=0;i<userBeat.size();i++){
 						sUserBeat+=userBeat.get(i).toString();
 					}
-					System.out.println(sUserBeat);
+					
 					if (userBeat.size() > 0) {
-						// Ȯ�ο�
 						System.out.println("TCPServer" + " Receive : " + sUserBeat);
-						// ���۹��� ������ ó�� : batch ���� �����Ѵ�.
 						String command = "C:\\Users\\5p\\Desktop\\Tok-Server-hee\\Tok-Server-hee\\Test.bat " +sUserBeat;
 						Process proc = Runtime.getRuntime().exec(command);
 						InputStreamReader isr = new InputStreamReader(proc.getInputStream());
@@ -73,12 +73,11 @@ public class TCPServer implements Runnable {
 						}
 						
 
-					} else {
+					} 
+					else {
 
 					}
 				//	Thread.sleep(50);
-
-					// �۽ź�
 
 					OutputStream os = client.getOutputStream();
 					ObjectOutputStream oos = new ObjectOutputStream(os);
@@ -94,15 +93,19 @@ public class TCPServer implements Runnable {
 					os.close();
 					oos.close();
 
-				} catch (Exception e) {
+				} 
+				catch (Exception e) {
 					System.out.println("S: Error");
 					e.printStackTrace();
-				} finally {
+				} 
+				finally {
 					client.close();
+					serverSocket.close();
 					System.out.println("S: Done.");
 				}
 			}
-		} catch (Exception e) {
+		} 
+		catch (Exception e) {
 			System.out.println("S: Error");
 			e.printStackTrace();
 		}
@@ -111,5 +114,12 @@ public class TCPServer implements Runnable {
 	public static void main(String[] arg) {
 		Thread desktopServerThread = new Thread(new TCPServer());
 		desktopServerThread.start();
+	}
+	
+	public TCPConfig getConfigValue() {
+		return configValue;
+	}
+	public void setConfigValue(TCPConfig configValue) {
+		this.configValue = configValue;
 	}
 }
