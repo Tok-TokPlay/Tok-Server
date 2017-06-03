@@ -29,6 +29,7 @@ public class TCPServer implements Runnable {
 		setConfigValue(new TCPConfig("165.194.17.11", 8801, "DB\\"));
 	}
 	public TCPServer(String newIP, int newPort, String newDirectory){
+		// Set Input parameter values into configure class.
 		setConfigValue(new TCPConfig(newIP, newPort, newDirectory));
 	}
 	
@@ -51,37 +52,23 @@ public class TCPServer implements Runnable {
 					InputStream is = client.getInputStream();
 					ObjectInputStream ois = new ObjectInputStream(is);
 
-					Data d = (Data) ois.readObject();
-					userBeat = (ArrayList<Integer>) d.getList();
+					// Read Input Socket Stream and change into String User beat.
+					Data inputData = (Data)ois.readObject();
+					String sUserBeat = inputData.toString();
+					String command = getConfigValue().getDbDirectory() + "Test.bat" + sUserBeat;
+					Process proc = Runtime.getRuntime().exec(command);
 					
-					String sUserBeat ="";
-					for(int i=0;i<userBeat.size();i++){
-						sUserBeat+=userBeat.get(i).toString();
+					// get Input Stream with sub shell system.
+					InputStreamReader isr = new InputStreamReader(proc.getInputStream());
+					BufferedReader br = new BufferedReader(isr);
+					
+					if ((musicKey = br.readLine()) != null) {
+						JDBCexam j = new JDBCexam(musicKey);
+						musicInfo=j.getRetuVal();
+						
+						System.out.println("music����" +musicInfo+ "\n");
 					}
 					
-					if (userBeat.size() > 0) {
-						System.out.println("TCPServer" + " Receive : " + sUserBeat);
-						// Test.bat file will doing Searching algorithm.
-						// Test.bat can change with Server-side OS Envinronment.
-						String command = getConfigValue().getDbDirectory() + "Test.bat" + sUserBeat;
-						Process proc = Runtime.getRuntime().exec(command);
-						
-						// get Inputstream with sub shell system.
-						InputStreamReader isr = new InputStreamReader(proc.getInputStream());
-						BufferedReader br = new BufferedReader(isr);
-
-						if ((musicKey = br.readLine()) != null) {
-							JDBCexam j =new JDBCexam(musicKey);
-							musicInfo=j.getRetuVal();
-							
-							System.out.println("music����" +musicInfo+ "\n");
-						}
-						
-
-					} 
-					else {
-
-					}
 				//	Thread.sleep(50);
 
 					OutputStream os = client.getOutputStream();
