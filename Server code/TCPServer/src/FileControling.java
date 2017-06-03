@@ -8,7 +8,6 @@ import java.io.PrintWriter;
 import java.nio.CharBuffer;
 import java.nio.file.*;
 import java.util.Random;
-
 public class FileControling {
 
 	private String filename;

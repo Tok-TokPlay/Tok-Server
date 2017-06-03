@@ -4,31 +4,22 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-
-public class JDBCexam {
-	Connection connection;
-	Statement statement;
-	ResultSet resultSet;
+public class MusicDataBase {
+	private Connection connection;
+	private Statement statement;
+	private ResultSet resultSet;
 	
-	String driverName = "com.mysql.jdbc.Driver";
-	String url = "jdbc:mysql://localhost:3306/o2";
-	String user = "root";
-	String password = "js1112";
+	private String driverName = "com.mysql.jdbc.Driver";
+	private String url = "jdbc:mysql://localhost:3306/o2";
+	private String user = "root";
+	private String password = "js1112";
 	
-	private String retuVal="";
-	
-	public JDBCexam(String musicNum){
+	public MusicDataBase(String musicNum){
 		try{
-			// �� �ε�
 			Class.forName(driverName);
-			//System.out.println("�ε� ����");
-			// �� ����
 			connection = DriverManager.getConnection(url, user, password);
-			//System.out.println("���� ����");
 			
-			//Statement ���
 			statement = connection.createStatement();
-			//System.out.println("statement ����");
 			
 			/*insert ����
 			if(funcName.equals("INSERT")){
@@ -36,28 +27,21 @@ public class JDBCexam {
 				String music;
 				String singer;
 				
-				System.out.println("music���� �Է����ּ���");
 				music = scan.nextLine();
 				
-				System.out.println("�������� �Է����ּ���");
 				singer = scan.nextLine();
 				
 				String sql = "INSERT INTO toktok(music, singer) VALUES ('" + music + "', '" + singer + "')";
 				statement.executeUpdate(sql);
-				System.out.println("insert ����");
 			}	
 			
-			//Delete ����
 			else if(funcName.equals("DELETE")){
 				Scanner scan = new Scanner(System.in);
-				System.out.println("�� ���� Ű���� �����ҷ�?");
 				String musicKey = scan.nextLine();
 				String sql = "DELETE FROM toktok WHERE musicKey=" + musicKey + ";";
 				statement.executeUpdate(sql);
-				System.out.println(musicKey + " ���� ���� �����Ǿ����ϴ�.");
 			}*/
 			
-			//select ����
 			//else if(funcName.equals("SELECT")){//
 				String sql = "SELECT * FROM toktok WHERE musicKey=" + musicNum + ";";
 				resultSet = statement.executeQuery(sql);
@@ -65,7 +49,7 @@ public class JDBCexam {
 					String musicKey = resultSet.getString("musicKey");
 					String music = resultSet.getString("music");
 					String singer = resultSet.getString("singer");
-					retuVal = music + "66" + singer;
+					//retuVal = music + "66" + singer;
 					
 				}
 		//	}//
@@ -81,12 +65,16 @@ public class JDBCexam {
 			System.out.println(e.toString());
 		}
 	}
-	
-	
-	public String getRetuVal() {
-		return retuVal;
+	public String getMusicName(String key){
+		String musicName = "";
+		return musicName;
 	}
-
+	public String getMusicSinger(String key){
+		String musicSinger = "";
+		return musicSinger;
+		
+	}
+	
 	public void closeDatabase()
 	{
 		try{
