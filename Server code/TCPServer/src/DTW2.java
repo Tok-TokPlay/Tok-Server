@@ -1,20 +1,11 @@
 /**
- * Created by park jin hee on 2017-05-19.
+ * This class implements the Dynamic Time Warping algorithm given two sequences.
+ * 	input : two sequences
+ *  	X = x1, x2, ..., xi, ..., xn
+ *  	Y = y1, y2, ..., yj, ..., ym
+ * 	output : similarity of given two sequences.
  */
 
-/**
- * This class implements the Dynamic Time Warping algorithm given two sequences
- * 
- * <pre>
-* 	input : two sequences
-*  	X = x1, x2, ..., xi, ..., xn
-*  	Y = y1, y2, ..., yj, ..., ym
-* 	output : similarity of given two sequences.
- * </pre>
- *
- * 
- * @version 1.1
- */
 public class DTW2 {
 	protected int[] seq1;
 	protected int[] seq2;
@@ -22,14 +13,13 @@ public class DTW2 {
 	protected double warpingDistance;
 
 	public DTW2(int[] sample, int[] templete) {
+		// Initialize DTW Values with given parameter.
 		seq1 = sample;
 		seq2 = templete;
 
 		n = seq1.length;
 		m = seq2.length;
 		K = 1;
-//System.out.println("n ,m : "+n+","+m);
-		// max(seq1.length, seq2.length) <= K < seq1.length + seq2.length
 		warpingDistance = 0.0;
 
 		this.compute();
