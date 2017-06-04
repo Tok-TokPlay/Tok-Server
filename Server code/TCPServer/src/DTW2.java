@@ -25,7 +25,9 @@ public class DTW2 {
 		// local variable accumulatedDistance, localDistance, globalDistance
 		// accumulatedDistance : Now Calculating distance from [0][0] to [MAX_LEGNTH1][MAX_LENGTH2}
 		double accumulatedDistance = 0.0;
-				
+		// Init Calculated value.
+		this.calculated = true;
+		
 		for (int i = 0; i < getSeq1().length; i++) {
 			for (int j = 0; j < getSeq2().length; j++) {
 				// Check all local distance with two sequence ( with Euclidean distance checking. )
