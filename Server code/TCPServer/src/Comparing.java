@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
 
-public class Compare {
+public class Comparing {
 	// segment the N1(original array) with size 1000
 	private final static int MIN_ERROR_RANGE = 5;
 
@@ -18,7 +18,7 @@ public class Compare {
 	private ArrayList<String> n1;
 	private String n2s;
 
-	Compare(String filePath, String n2s) {
+	Compaing(String filePath, String n2s) {
 		this.n2s = n2s;
 		SEG_LENGTH_1000 = n2s.length();
 		SEG_LENGTH = SEG_LENGTH_1000 + (SEG_LENGTH_1000 / 3);
