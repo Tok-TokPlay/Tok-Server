@@ -9,54 +9,46 @@
 public class DTW2 {
 	private int[] seq1;
 	private int[] seq2;
-	private int n, m, K;
-	private double warpingDistance;
-
+	
 	public DTW2(int[] sample, int[] templete) {
 		// Initialize DTW Values with given parameter.
-		seq1 = sample;
-		seq2 = templete;
-
-		n = seq1.length;
-		m = seq2.length;
-		K = 1;
-		warpingDistance = 0.0;
-
+		this.seq1 = sample;
+		this.seq2 = templete;
 		this.compute();
 	}
 
 	public void compute() {
 		double accumulatedDistance = 0.0;
-		double[][] d = new double[n][m]; // local distances
-		double[][] D = new double[n][m]; // global distances
+		double[][] localDistance = new double[getSeq1().length][getSeq2().length]; // local distances = d
+		double[][] globalDistance = new double[getSeq1().length][getSeq2().length]; // global distances = D
 
-		for (int i = 0; i < n; i++) {
-			for (int j = 0; j < m; j++) {
-				d[i][j] = distanceBetween(seq1[i], seq2[j]);
+		for (int i = 0; i < getSeq1().length; i++) {
+			for (int j = 0; j < getSeq2().length; j++) {
+				localDistance[i][j] = distanceBetween(seq1[i], seq2[j]);
 			}
 		}
 
-		D[0][0] = d[0][0];
+		globalDistance[0][0] = localDistance[0][0];
 
 		for (int i = 1; i < seq1.length; i++) {
-			D[i][0] = d[i][0] + D[i - 1][0];
+			globalDistance[i][0] = localDistance[i][0] + globalDistance[i - 1][0];
 		}
 
 		for (int j = 1; j < seq2.length; j++) {
-			D[0][j] = d[0][j] + D[0][j - 1];
+			globalDistance[0][j] = localDistance[0][j] + globalDistance[0][j - 1];
 		}
 
-		for (int i = 1; i < n; i++) {
-			for (int j = 1; j < m; j++) {
-				accumulatedDistance = Math.min(Math.min(D[i - 1][j], D[i - 1][j - 1]), D[i][j - 1]);
-				accumulatedDistance += d[i][j];
-				D[i][j] = accumulatedDistance;
+		for (int i = 1; i < getSeq1().length; i++) {
+			for (int j = 1; j < getSeq2().length; j++) {
+				accumulatedDistance = Math.min(Math.min(globalDistance[i - 1][j], globalDistance[i - 1][j - 1]), globalDistance[i][j - 1]);
+				accumulatedDistance += localDistance[i][j];
+				globalDistance[i][j] = accumulatedDistance;
 			}
 		}
-		accumulatedDistance = D[n - 1][m - 1];
+		accumulatedDistance = globalDistance[getSeq1().length - 1][getSeq2().length - 1];
 
-		int i = n - 1;
-		int j = m - 1;
+		int i = getSeq1().length - 1;
+		int j = getSeq2().length - 1;
 		int minIndex = 1;
 
 		while ((i + j) != 0) {
@@ -65,7 +57,7 @@ public class DTW2 {
 			} else if (j == 0) {
 				i -= 1;
 			} else { // i != 0 && j != 0
-				double[] array = { D[i - 1][j], D[i][j - 1], D[i - 1][j - 1] };
+				double[] array = { globalDistance[i - 1][j], globalDistance[i][j - 1], globalDistance[i - 1][j - 1] };
 				minIndex = this.getIndexOfMinimum(array);
 
 				if (minIndex == 0) {
@@ -130,5 +122,14 @@ public class DTW2 {
 			}
 		}
 		return index;
+	}
+
+	// Doesn`t need to make setter because this class just need for compute each seq1, seq2 at constructor.
+	public int[] getSeq1(){
+		return this.seq1;
+	}
+	
+	public int[] getSeq2(){
+		return this.seq2;
 	}
 }
