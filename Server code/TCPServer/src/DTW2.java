@@ -42,19 +42,21 @@ public class DTW2 {
 		// Initializing it.
 		globalDistance[0][0] = localDistance[0][0];
 		
-		for (int i = 1; i < seq1.length; i++) {
-			globalDistance[i][0] = localDistance[i][0] + globalDistance[i - 1][0];
+		for (int row = 1; row < seq1.length; row++) {
+			// Initializing first row of global distance with local distance.
+			globalDistance[row][0] = localDistance[row][0] + globalDistance[row - 1][0];
 		}
 		
-		for (int j = 1; j < seq2.length; j++) {
-			globalDistance[0][j] = localDistance[0][j] + globalDistance[0][j - 1];
+		for (int column = 1; column < seq2.length; column++) {
+			// Initializing first column of global distance with local distance.
+			globalDistance[0][column] = localDistance[0][column] + globalDistance[0][column - 1];
 		}
 		
-		for (int i = 1; i < getSeq1().length; i++) {
-			for (int j = 1; j < getSeq2().length; j++) {
-				accumulatedDistance = Math.min(Math.min(globalDistance[i - 1][j], globalDistance[i - 1][j - 1]), globalDistance[i][j - 1]);
-				accumulatedDistance += localDistance[i][j];
-				globalDistance[i][j] = accumulatedDistance;	
+		for (int row = 1; row < getSeq1().length; row++) {
+			for (int column = 1; column < getSeq2().length; column++) {
+				accumulatedDistance = Math.min(Math.min(globalDistance[row - 1][column], globalDistance[row - 1][column - 1]), globalDistance[row][column - 1]);
+				accumulatedDistance += localDistance[row][column];
+				globalDistance[row][column] = accumulatedDistance;	
 			}	
 		}
 		
