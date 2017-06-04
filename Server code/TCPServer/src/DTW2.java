@@ -7,10 +7,10 @@
  */
 
 public class DTW2 {
-	protected int[] seq1;
-	protected int[] seq2;
-	protected int n, m, K;
-	protected double warpingDistance;
+	private int[] seq1;
+	private int[] seq2;
+	private int n, m, K;
+	private double warpingDistance;
 
 	public DTW2(int[] sample, int[] templete) {
 		// Initialize DTW Values with given parameter.
@@ -108,7 +108,7 @@ public class DTW2 {
 	 *            the point 2
 	 * @return the distance between two points
 	 */
-	protected double distanceBetween(double p1, double p2) {
+	private double distanceBetween(double p1, double p2) {
 		return (p1 - p2) * (p1 - p2);
 	}
 
@@ -131,8 +131,4 @@ public class DTW2 {
 		}
 		return index;
 	}
-
-	/**
-	 * Returns a string that displays the warping distance and path
-	 */
 }
