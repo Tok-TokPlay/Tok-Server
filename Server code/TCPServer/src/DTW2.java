@@ -1,11 +1,3 @@
-/**
- * This class implements the Dynamic Time Warping algorithm given two sequences.
- * 	input : two sequences
- *  	X = x1, x2, ..., xi, ..., xn
- *  	Y = y1, y2, ..., yj, ..., ym
- * 	output : similarity of given two sequences.
- */
-
 public class DTW2 {
 	// Algorithms basic data structure.
 	private int[] seq1;
@@ -21,6 +13,10 @@ public class DTW2 {
 		// local and global distance array to calculate DTW.
 		localDistance = new double[getSeq1().length][getSeq2().length];
 		globalDistance = new double[getSeq1().length][getSeq2().length];
+	}
+	
+	public void fillDistanc()	{
+		
 	}
 
 	public double getInverseSimilarity()	{
@@ -38,7 +34,7 @@ public class DTW2 {
 			}
 		}
 		
-		// First ( 0, 0 ) global distance is loca distance( 0, 0 ).
+		// First ( 0, 0 ) global distance is local distance( 0, 0 ).
 		// Initializing it.
 		globalDistance[0][0] = localDistance[0][0];
 		
@@ -54,52 +50,25 @@ public class DTW2 {
 		
 		for (int row = 1; row < getSeq1().length; row++) {
 			for (int column = 1; column < getSeq2().length; column++) {
+				// Initialize distance table ( Global Distance ) with Euclidean Distance.
+				// Gathering smallest values in adjacent indexes.
 				accumulatedDistance = Math.min(Math.min(globalDistance[row - 1][column], globalDistance[row - 1][column - 1]), globalDistance[row][column - 1]);
-				accumulatedDistance += localDistance[row][column];
+				
+				accumulatedDistance = accumulatedDistance + localDistance[row][column];
 				globalDistance[row][column] = accumulatedDistance;	
 			}	
 		}
-		
+		// Max value is at [-1][-1].
 		accumulatedDistance = globalDistance[getSeq1().length - 1][getSeq2().length - 1];
-		int i = getSeq1().length - 1;
-		int j = getSeq2().length - 1;
-		int minIndex = 1;
-		while ((i + j) != 0) {
-			if (i == 0) {
-				j -= 1;
-			}
-			else if (j == 0) {
-				i -= 1;
-			}
-			else { // i != 0 && j != 0
-				double[] array = { globalDistance[i - 1][j], globalDistance[i][j - 1], globalDistance[i - 1][j - 1] };
-				minIndex = this.getIndexOfMinimum(array);
-				if (minIndex == 0) {
-					i -= 1;
-				} else if (minIndex == 1) {
-					j -= 1;	
-				} 
-				else if (minIndex == 2) {
-					i -= 1;
-					j -= 1;	
-				}
-			} // end else
-			K++;
-		} // end while	
-		return accumulatedDistance / K;
+		
+		return accumulatedDistance;
 	}
+	
 	private double distanceBetween(double p1, double p2) {
 		// Return Euclidean Distance between two point.
 		return Math.sqrt((p1 - p2) * (p1 - p2));
 	}
 
-	/**
-	 * Finds the index of the minimum element from the given array
-	 *
-	 * @param array
-	 *            the array containing numeric values
-	 * @return the min value among elements
-	 */
 	protected int getIndexOfMinimum(double[] array) {
 		int index = 0;
 		double val = array[0];
