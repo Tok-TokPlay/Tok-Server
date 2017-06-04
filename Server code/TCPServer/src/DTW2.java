@@ -9,22 +9,28 @@
 public class DTW2 {
 	private int[] seq1;
 	private int[] seq2;
+	private double[][] localDistance;
+	private double[][] globalDistance;
 	
 	public DTW2(int[] sample, int[] templete) {
 		// Initialize DTW Values with given parameter.
 		this.seq1 = sample;
 		this.seq2 = templete;
+		
+		// local and global distance array to calculate DTW.
+		localDistance = new double[getSeq1().length][getSeq2().length];
+		globalDistance = new double[getSeq1().length][getSeq2().length];
 		this.compute();
 	}
 
 	public void compute() {
+		// local variable accumulatedDistance, localDistance, globalDistance
+		// accumulatedDistance : Now Calculating distance from [0][0] to [MAX_LEGNTH1][MAX_LENGTH2}
 		double accumulatedDistance = 0.0;
-		double[][] localDistance = new double[getSeq1().length][getSeq2().length]; // local distances = d
-		double[][] globalDistance = new double[getSeq1().length][getSeq2().length]; // global distances = D
-
+		
 		for (int i = 0; i < getSeq1().length; i++) {
 			for (int j = 0; j < getSeq2().length; j++) {
-				localDistance[i][j] = distanceBetween(seq1[i], seq2[j]);
+				getLocalDistance()[i][j] = distanceBetween(seq1[i], seq2[j]);
 			}
 		}
 
@@ -54,9 +60,11 @@ public class DTW2 {
 		while ((i + j) != 0) {
 			if (i == 0) {
 				j -= 1;
-			} else if (j == 0) {
+			} 
+			else if (j == 0) {
 				i -= 1;
-			} else { // i != 0 && j != 0
+			} 
+			else { // i != 0 && j != 0
 				double[] array = { globalDistance[i - 1][j], globalDistance[i][j - 1], globalDistance[i - 1][j - 1] };
 				minIndex = this.getIndexOfMinimum(array);
 
@@ -75,33 +83,13 @@ public class DTW2 {
 
 	}
 
-	/**
-	 * Changes the order of the warping path (increasing order)
-	 *
-	 * @param path
-	 *            the warping path in reverse order
-	 */
-
-	/**
-	 * Returns the warping distance
-	 *
-	 * @return
-	 */
 	public double getDistance() {
 		return warpingDistance;
 	}
 
-	/**
-	 * Computes a distance between two points
-	 *
-	 * @param p1
-	 *            the point 1
-	 * @param p2
-	 *            the point 2
-	 * @return the distance between two points
-	 */
 	private double distanceBetween(double p1, double p2) {
-		return (p1 - p2) * (p1 - p2);
+		// Return Euclidean Distance between two point.
+		return Math.sqrt((p1 - p2) * (p1 - p2));
 	}
 
 	/**
@@ -132,4 +120,37 @@ public class DTW2 {
 	public int[] getSeq2(){
 		return this.seq2;
 	}
+	
+	public double[][] getLocalDistance()	{
+		return this.localDistance;
+	}
+	
+	public double getLocalDistance(int i, int j)	{
+		// if out of index, return -1;
+		if(localDistance.length > i) { 
+			if( localDistance[i].length > j)	{
+				return -1;
+			}
+			return -1;
+		}
+		// else, return local[i][j]
+		return this.localDistance[i][j];
+	}
+	
+	public double[][] getGlobalDistance()	{
+		return this.globalDistance;
+	}
+	
+	public double getGlobalDistance(int i, int j)	{
+		// if out of index, return -1;
+		if(globalDistance.length > i) { 
+			if( globalDistance[i].length > j)	{
+				return -1;
+			}
+			return -1;
+		}
+		// else return global[i][j]
+		return this.globalDistance[i][j];
+	}
+	
 }
