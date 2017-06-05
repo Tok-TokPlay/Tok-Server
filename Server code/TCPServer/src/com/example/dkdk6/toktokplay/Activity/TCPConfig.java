@@ -1,3 +1,5 @@
+package com.example.dkdk6.toktokplay.Activity;
+
 public class TCPConfig {
 	private String ip;
 	private int port;

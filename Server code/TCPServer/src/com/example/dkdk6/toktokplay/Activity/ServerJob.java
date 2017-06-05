@@ -3,7 +3,7 @@
  * 1. Initialize music Database table.
  * 2. Force output into correct way.
  * */
-
+package com.example.dkdk6.toktokplay.Activity;
 import java.util.Scanner;
 
 public class ServerJob implements Runnable{

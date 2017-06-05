@@ -1,9 +1,5 @@
-/Compare.class
-/DTW2.class
-/Data.class
-/MusicDataBase.class
-/ServerJob.class
-/TCPConfig.class
-/TCPServer.class
-/TokServer.class
-/Comparing.class
+/TableInit.class
+/com/
+/DBTableInit.class
+/DBTableInsert.class
+/TableInit$1.class

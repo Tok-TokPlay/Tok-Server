@@ -1,3 +1,4 @@
+package com.example.dkdk6.toktokplay.Activity;
 public class DTW2 {
 	// Algorithms basic data structure.
 	private int[] seq1;
