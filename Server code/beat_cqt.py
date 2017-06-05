@@ -252,14 +252,13 @@ time_variation=0.5):
     now = 0
     for file_name in file_names:
         now += 1
-        if debugmode != -1:
-            # if debugmode on, write debugging message to console.
-            print "Strat extracting " + file_name + "... Now " + str(now) + " / "+  \
-            str(len(file_names))
+        # if debugmode on, write debugging message to console.
+        print "Strat extracting " + file_name + "... Now " + str(now) + " / "+  \
+        str(len(file_names))
 
         dest_file = to_wav(dir_name, dir_name, file_name, addable_option)
         # if want to extract some given length, give load to duration value.
-        audio_list, sampling_rate = lb.load(dest_file, offset=0.0)
+        audio_list, sampling_rate = lb.load(dest_file, offset=0.0, duration=60.0)
         if debugmode != -1:
             # if debugmode on, write debugging message to console.
             print "file opend..." + "... Now " + str(now) + " / "+  str(len(file_names))
