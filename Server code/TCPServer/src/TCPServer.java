@@ -67,15 +67,13 @@ public class TCPServer implements Runnable {
 					
 					// command would "$SERVER_PATH\\Test.bat $NOW_PATH\\Search.jar + USER_BEAT".
 					System.out.println("Server: Search is processing from port..." + client.getPort());
-					String command = getConfigValue().getDbDirectory() + "Test.bat" + System.getProperty("user.dir")+"Search.jar" + sUserBeat;
-					Process proc = Runtime.getRuntime().exec(command);
+					Comparing compare = new Comparing(configValue.getDbDirectory(),sUserBeat);
+					
 					
 					// get Input Stream with sub shell system.
-					InputStreamReader isr = new InputStreamReader(proc.getInputStream());
-					BufferedReader br = new BufferedReader(isr);
 					
 					// Read music key value from sub-shell.
-					String musicKey = br.readLine();
+					String musicKey = compare.getMusicKey();
 					if (musicKey!= null) {
 						String musicName = database.getMusicName(musicKey);
 						String musicSinger = database.getMusicSinger(musicKey);
