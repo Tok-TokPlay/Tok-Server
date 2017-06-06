@@ -85,8 +85,8 @@ public class TCPServer implements Runnable {
 						ObjectOutputStream oos = new ObjectOutputStream(os);
 						
 						// Give music name and singer with parsing comment "^^".
-						oos.writeObject(musicInfo);
 						System.out.println(musicInfo);
+						oos.writeObject(musicInfo);
 						// Close not using stream controller.
 						os.close();
 						oos.close();

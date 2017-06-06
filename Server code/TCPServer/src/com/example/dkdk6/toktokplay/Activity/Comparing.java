@@ -47,9 +47,14 @@ public class Comparing {
 	void compare() throws IOException {
 		result = new double[fileNumber];
 		for (int fNum = 0; fNum<fileNumber  ; fNum++) {
+			int sumOfN1=0;
+			int meanOfN1=0;
 			fileName = fileList[fNum].getName();
 			filePathAndName = filePath + "\\" + fileName;
 			n1 = getN1();
+			for(int i=0;i<n1.size();i++)
+				sumOfN1 =(int)Float.parseFloat(n1.get(i));
+			meanOfN1 = sumOfN1/n1.size();
 			// to compare each segmentedN1 with n1
 			int segmentedN1[] = new int[SEG_LENGTH];
 			int segmentedN1_1000[] = new int[SEG_LENGTH_1000];
@@ -83,6 +88,7 @@ public class Comparing {
 				// n2s to n2
 				for (int j = 0; i < n2.length; i++) {
 					n2[j] = n2s.charAt(j) - '0';
+					n2[j] *= meanOfN1;
 				}
 				DTW2 dtw = new DTW2(segmentedN1, n2);
 				// finding any SegLocations which makes minimum min value
