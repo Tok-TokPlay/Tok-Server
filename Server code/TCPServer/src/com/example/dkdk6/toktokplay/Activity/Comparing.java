@@ -16,28 +16,35 @@ public class Comparing {
 	private int correctable[];
 	private int fileNumber;
 	private String fileName;
+	private String filePath;
+	private String filePathAndName;
 	private ArrayList<String> n1;
+	private File[] fileList;
 	private String n2s;
 	private String musicKey;
-
+	double[] result;
 	Comparing(String filePath, String n2s) throws IOException {
 		this.n2s = n2s;
 		SEG_LENGTH_1000 = n2s.length();
 		SEG_LENGTH = SEG_LENGTH_1000 + (SEG_LENGTH_1000 / 3);
 		correctable = new int[SEG_LENGTH];
 
+		this.filePath = filePath;
 		File path = new File(filePath);
 		String files[] = path.list();
+		fileList = path.listFiles();
 		fileNumber = files.length;
 
-		fileName = filePath + "\\" + fileNumber + ".txt";
+		//fileName = filePath + "\\" + fileNumber + ".txt";
 		
 		compare();
 	}
 
 	void compare() throws IOException {
-		double[] result = new double[fileNumber];
-		for (int fNum = fileNumber; fNum > 0; fNum--) {
+		result = new double[fileNumber];
+		for (int fNum = 0; fileNumber> fNum ; fNum++) {
+			fileName = fileList[fNum].getName();
+			filePathAndName = filePath + "\\" + fileName;
 			n1 = getN1();
 			// to compare each segmentedN1 with n1
 			int segmentedN1[] = new int[SEG_LENGTH];
@@ -55,7 +62,7 @@ public class Comparing {
 			while (SegLocation > 0) {
 				if (SegLocation != 1) {
 					for (int j = 0; j < SEG_LENGTH; j++, i++) {
-						segmentedN1[j] = Integer.parseInt(n1.get(i));
+						segmentedN1[j] = (int)Float.parseFloat(n1.get(i));
 					}
 				}
 				// if it is the last segment of the arrayList, the last length
@@ -63,7 +70,7 @@ public class Comparing {
 				// be smaller than SEG_LENGTH -> so SEG_LENGTH
 				else {
 					for (int j = 0; j < SEG_LENGTH_1000; j++, i++) {
-						segmentedN1_1000[j] = Integer.parseInt(n1.get(i));
+						segmentedN1_1000[j] = (int)Float.parseFloat(n1.get(i));
 					}
 				}
 				// to store again (about seg_length/3 size) at next turn...
@@ -118,7 +125,7 @@ public class Comparing {
 					// <Char> to integer
 					// temporary, I set tmpi boundary
 					for (int j = 0; j < SEG_LENGTH_1000 && tmpi < n1.size(); j++, tmpi++) {
-						segmentedN1_1000[j] = Integer.parseInt(n1.get(tmpi));
+						segmentedN1_1000[j] = (int)Float.parseFloat(n1.get(tmpi));
 					}
 					// check similarity by DTW
 					DTW2 dtw1 = new DTW2(segmentedN1_1000, n2);
@@ -131,7 +138,7 @@ public class Comparing {
 				}
 			}
 			n1.clear();
-			result[fileNumber] = min2;
+			result[fNum] = min2;
 		}
 		double minResult=9999999;//to make max value;
 		int minI = 0;
@@ -141,11 +148,11 @@ public class Comparing {
 				minResult = result[i];
 			}
 		}
-		musicKey = Integer.toString(minI);
+		musicKey = fileList[minI].getName();
 	}
 	// I will move the compare 'Main'class's function to here.
 	ArrayList<String> getN1() throws IOException {
-		BufferedReader in = new BufferedReader(new FileReader(fileName));
+		BufferedReader in = new BufferedReader(new FileReader(filePathAndName));
 		String temp;
 		ArrayList<String> arrayList = new ArrayList<String>();
 		while ((temp = in.readLine()) != null) {
@@ -156,6 +163,9 @@ public class Comparing {
 	}
 
 	String getMusicKey() {
+		for(int i = 0; i < result.length; i++){
+			System.out.println(result[i]);
+		}
 		return musicKey;
 	}
 	int[] getCorrectable() {

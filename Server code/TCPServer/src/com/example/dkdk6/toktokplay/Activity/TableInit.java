@@ -55,9 +55,9 @@ public class TableInit {
 				
 					String singer = new String(singerBuf, 0, singerBuf.length);
 					singer = singer.replaceAll("\0", "");
-					
 					//Insert to DB
-					DBTableInsert TableInsert = new DBTableInsert(music, singer);
+					DBTableInsert TableInsert = new DBTableInsert(music, singer, fileList[i].split(".mp3")[0]+".txt");
+
 					
 				} catch (Exception e){
 					System.out.println("Null mp3 header");

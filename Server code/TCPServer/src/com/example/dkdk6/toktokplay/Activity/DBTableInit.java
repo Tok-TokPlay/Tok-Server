@@ -30,7 +30,7 @@ public class DBTableInit{
 			//Drop table
 			String sql = "DROP TABLE IF EXISTS toktok;";
 			statement.executeUpdate(sql);
-			sql = "CREATE TABLE `toktok` ( `musicKey` int(11) NOT NULL AUTO_INCREMENT, `music` varchar(30) NOT NULL, `singer` varchar(30) NOT NULL, PRIMARY KEY(musicKey)) ENGINE=InnoDB DEFAULT CHARSET=utf8;";
+			sql = "CREATE TABLE `toktok` ( `musicKey` varchar(100) NOT NULL, `music` varchar(30) NOT NULL, `singer` varchar(30) NOT NULL, PRIMARY KEY(musicKey)) ENGINE=InnoDB DEFAULT CHARSET=utf8;";
 			statement.executeUpdate(sql);
 			
 		}catch (ClassNotFoundException e){

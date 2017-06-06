@@ -17,7 +17,7 @@ public class DBTableInsert{
 	String user = "root";
 	String password = "111111";
 	
-	public DBTableInsert(String music, String singer){
+	public DBTableInsert(String music, String singer, String musicKey){
 		try{
 			// ① 로드
 			Class.forName(driverName);
@@ -28,7 +28,7 @@ public class DBTableInsert{
 			statement = connection.createStatement();
 					
 			//insert 실행
-			String sql = "INSERT INTO toktok(music, singer) VALUES ('" + music + "', '" + singer + "')";
+			String sql = "INSERT INTO toktok(musicKey, music, singer) VALUES ('" + musicKey + "', '" + music + "', '" + singer + "');";
 			statement.executeUpdate(sql);
 			System.out.println("insert success");
 			

@@ -69,11 +69,10 @@ public class TCPServer implements Runnable {
 					System.out.println("Server: Search is processing from port..." + client.getPort());
 					//Comparing compare = new Comparing(configValue.getDbDirectory(),sUserBeat);
 					
-					
 					// get Input Stream with sub shell system.
 					
 					// Read music key value from sub-shell.
-					String musicKey = "1";
+					String musicKey = new Comparing(getConfigValue().getDbDirectory(), sUserBeat).getMusicKey();
 					if (musicKey!= null) {
 						String musicInfo = database.getMusicInfo(musicKey);
 						
@@ -100,7 +99,6 @@ public class TCPServer implements Runnable {
 				} 
 				finally {
 					client.close();
-					serverSocket.close();
 					System.out.println("Server: Give music information to client is done from port..."  + client.getPort());
 				}
 				// Input user`s request 0.5 seconds per once.

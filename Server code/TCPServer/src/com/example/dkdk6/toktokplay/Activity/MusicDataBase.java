@@ -27,7 +27,7 @@ public class MusicDataBase {
 	
 	public String getMusicInfo(String key){
 		// Get music name with key value ( fileName ).
-		String sql = "SELECT * FROM toktok WHERE musicKey=" + key + ";";
+		String sql = "SELECT * FROM toktok WHERE musicKey='" + key + "';";
 		String musicKey = "";
 		String musicName = "";
 		String musicSinger = "";
