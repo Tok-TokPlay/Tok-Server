@@ -16,7 +16,7 @@ public class TableInit {
 		DBTableInit DropTable = new DBTableInit();
 		
 		//Find the all mp3 file in the directory
-		File path = new File("C:\\Users\\5p\\Desktop\\musicFile");
+		File path = new File("C:\\Users\\4F\\Desktop\\musicFile");
 		final String fatternName = ".mp3";
 		
 		String fileList[] = path.list(new FilenameFilter() {
@@ -30,7 +30,7 @@ public class TableInit {
 		
 		//read all mp3 header file in the directory
 		for(int i=0; i<fileList.length; i++){
-			File f = new File("C:\\Users\\5p\\Desktop\\musicFile\\" + fileList[i]);	//set the music file directory in here
+			File f = new File("C:\\Users\\4F\\Desktop\\musicFile\\" + fileList[i]);	//set the music file directory in here
 			RandomAccessFile rf;
 			try {
 				rf = new RandomAccessFile(f , "r");

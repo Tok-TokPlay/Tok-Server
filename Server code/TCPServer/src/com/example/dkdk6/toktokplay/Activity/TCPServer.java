@@ -23,11 +23,6 @@ public class TCPServer implements Runnable {
 	
 	// Constructor part
 	// Do not make default constructor, because of target Database. 
-	 private static void serverInput()   {
-	      // Server administration start.
-	      Thread inputingThread = new Thread(new ServerJob(database));
-	      inputingThread.start();
-	   }
 	
 	public TCPServer(String newIP, int newPort, String newDirectory, MusicDataBase database){
 		super();
@@ -73,6 +68,7 @@ public class TCPServer implements Runnable {
 					
 					// Read music key value from sub-shell.
 					System.gc();
+					System.out.println(sUserBeat);
 					String musicKey = new Comparing(getConfigValue().getDbDirectory(), sUserBeat).getMusicKey();
 					System.gc();
 					if (musicKey!= null) {

@@ -49,15 +49,19 @@ public class Comparing {
 	void compare() throws IOException {
 		result = new double[fileNumber];
 		for (int fNum = 0; fNum<fileNumber  ; fNum++) {
+			System.out.println((fNum + 1) + " th file Checking now...");
 			int sumOfN1=0;
 			int meanOfN1=0;
 			fileName = fileList[fNum].getName();
 			filePathAndName = filePath + "\\" + fileName;
 			n1 = getN1();
-			for(int i=0;i<n1.size();i++)
-				sumOfN1 =(int)Float.parseFloat(n1.get(i));
+			for(int i=0;i<n1.size();i++){
+				sumOfN1 += (int)Float.parseFloat(n1.get(i));
+			}
+			
 			meanOfN1 = sumOfN1/n1.size();
 			// to compare each segmentedN1 with n1
+			
 			int segmentedN1[] = new int[SEG_LENGTH];
 			int segmentedN1_1000[] = new int[SEG_LENGTH_1000];
 			int segSize = n1.size() / SEG_LENGTH_1000;
@@ -77,8 +81,7 @@ public class Comparing {
 					}
 				}
 				// if it is the last segment of the arrayList, the last length
-				// would
-				// be smaller than SEG_LENGTH -> so SEG_LENGTH
+				// would be smaller than SEG_LENGTH -> so SEG_LENGTH
 				else {
 					for (int j = 0; j < SEG_LENGTH_1000; j++, i++) {
 						segmentedN1_1000[j] = (int)Float.parseFloat(n1.get(i));
@@ -92,10 +95,11 @@ public class Comparing {
 					n2[j] = n2s.charAt(j) - '0';
 					n2[j] *= meanOfN1;
 				}
-				DTW2 dtw = new DTW2(segmentedN1, n2);
 				// finding any SegLocations which makes minimum min value
 				// 0,1,2,3,4
-				distance = dtw.getDistance();
+				System.gc();
+				distance = new DTW2(segmentedN1, n2).getDistance();
+				System.gc();
 				if (arrLength < 5) {
 					min[arrLength++] = distance;
 				} else {
@@ -141,7 +145,9 @@ public class Comparing {
 						System.gc();
 					}
 					// check similarity by DTW
+					System.gc();
 					DTW2 dtw1 = new DTW2(segmentedN1_1000, n2);
+					System.gc();
 					// store the minimum result of DTW
 					if (min2 > dtw1.getDistance()) {
 						min2 = dtw1.getDistance();
