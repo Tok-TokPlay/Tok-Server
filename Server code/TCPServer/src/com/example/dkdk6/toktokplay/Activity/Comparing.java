@@ -25,6 +25,10 @@ public class Comparing {
 	double[] result;
 	Comparing(String filePath, String n2s) throws IOException {
 		this.n2s = n2s;
+		for(int i=0; i<n2s.length();i++){
+			System.out.print(n2s.charAt(i)-'0');
+		}
+		System.out.println();
 		SEG_LENGTH_1000 = n2s.length();
 		SEG_LENGTH = SEG_LENGTH_1000 + (SEG_LENGTH_1000 / 3);
 		correctable = new int[SEG_LENGTH];
@@ -42,7 +46,7 @@ public class Comparing {
 
 	void compare() throws IOException {
 		result = new double[fileNumber];
-		for (int fNum = 0; fileNumber> fNum ; fNum++) {
+		for (int fNum = 0; fNum<fileNumber  ; fNum++) {
 			fileName = fileList[fNum].getName();
 			filePathAndName = filePath + "\\" + fileName;
 			n1 = getN1();
@@ -83,7 +87,7 @@ public class Comparing {
 				DTW2 dtw = new DTW2(segmentedN1, n2);
 				// finding any SegLocations which makes minimum min value
 				// 0,1,2,3,4
-				distance = dtw.getInverseSimilarity();
+				distance = dtw.getDistance();
 				if (arrLength < 5) {
 					min[arrLength++] = distance;
 				} else {
@@ -130,8 +134,8 @@ public class Comparing {
 					// check similarity by DTW
 					DTW2 dtw1 = new DTW2(segmentedN1_1000, n2);
 					// store the minimum result of DTW
-					if (min2 > dtw1.getInverseSimilarity()) {
-						min2 = dtw1.getInverseSimilarity();
+					if (min2 > dtw1.getDistance()) {
+						min2 = dtw1.getDistance();
 						correctable = segmentedN1;
 					}
 					i = i + n2.length / 3;
