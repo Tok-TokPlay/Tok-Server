@@ -134,10 +134,13 @@ public class DTW2 {
 		// max(seq1.length, seq2.length) <= K < seq1.length + seq2.length
 		warpingDistance = 0.0;
 
+		System.gc();
 		this.compute();
+		System.gc();
 	}
 
 	public void compute() {
+		System.gc();
 		double accumulatedDistance = 0.0;
 		System.gc();
 		double[][] d = new double[n][m]; // local distances

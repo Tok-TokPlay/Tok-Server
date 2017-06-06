@@ -72,6 +72,7 @@ public class TCPServer implements Runnable {
 					// get Input Stream with sub shell system.
 					
 					// Read music key value from sub-shell.
+					System.gc();
 					String musicKey = new Comparing(getConfigValue().getDbDirectory(), sUserBeat).getMusicKey();
 					System.gc();
 					if (musicKey!= null) {

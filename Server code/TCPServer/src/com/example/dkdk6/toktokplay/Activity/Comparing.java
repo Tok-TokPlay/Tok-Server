@@ -28,7 +28,7 @@ public class Comparing {
 		for(int i=0; i<n2s.length();i++){
 			System.out.print(n2s.charAt(i)-'0');
 		}
-		System.out.println();
+		System.out.println("^n2");
 		SEG_LENGTH_1000 = n2s.length();
 		SEG_LENGTH = SEG_LENGTH_1000 + (SEG_LENGTH_1000 / 3);
 		correctable = new int[SEG_LENGTH];
@@ -40,8 +40,10 @@ public class Comparing {
 		fileNumber = files.length;
 
 		//fileName = filePath + "\\" + fileNumber + ".txt";
-		
+
+		System.gc();
 		compare();
+		System.gc();
 	}
 
 	void compare() throws IOException {
@@ -136,6 +138,7 @@ public class Comparing {
 					// temporary, I set tmpi boundary
 					for (int j = 0; j < SEG_LENGTH_1000 && tmpi < n1.size(); j++, tmpi++) {
 						segmentedN1_1000[j] = (int)Float.parseFloat(n1.get(tmpi));
+						System.gc();
 					}
 					// check similarity by DTW
 					DTW2 dtw1 = new DTW2(segmentedN1_1000, n2);
