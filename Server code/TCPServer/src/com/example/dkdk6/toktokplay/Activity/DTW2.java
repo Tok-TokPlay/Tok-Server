@@ -139,6 +139,7 @@ public class DTW2 {
 
 	public void compute() {
 		double accumulatedDistance = 0.0;
+		System.gc();
 		double[][] d = new double[n][m]; // local distances
 		double[][] D = new double[n][m]; // global distances
 

@@ -106,7 +106,7 @@ public class Comparing {
 			// And I will check more detail around this part.
 			//I wanted to make this another function but there is no time........
 			int tmpi;
-			double min2 = 9999999;
+			double min2 = 999999999;
 
 			for (int l = 0; l < MIN_ERROR_RANGE; l++) {
 				int k = 0;
@@ -144,7 +144,7 @@ public class Comparing {
 			n1.clear();
 			result[fNum] = min2;
 		}
-		double minResult=9999999;//to make max value;
+		double minResult=999999999;//to make max value;
 		int minI = 0;
 		for(int i=0;i<fileNumber;i++){
 			if(minResult>result[i]){
