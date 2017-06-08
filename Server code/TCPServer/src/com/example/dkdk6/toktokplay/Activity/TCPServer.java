@@ -12,6 +12,8 @@ import java.io.OutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 
+import com.example.dkdk6.toktokplay.Activity.timeseries.TimeSeries;
+
 public class TCPServer implements Runnable {
 	// Port and IP can be changed. DO NOT ASSIGN IT CONSTANT.
 	private TCPConfig configValue;
@@ -69,7 +71,45 @@ public class TCPServer implements Runnable {
 					// Read music key value from sub-shell.
 					System.gc();
 					System.out.println(sUserBeat);
+					
+					
+					
+					
+					
+					
+					// Use TimeSereies Class like this...
+					// Create with Double Array Type, not array list.
+					double[] userArray = new double[inputData.getList().size()];
+					for(int arraySize = 0; arraySize < inputData.getList().size(); arraySize++)	{
+						userArray[arraySize] = inputData.getList().get(arraySize);
+					}
+					TimeSeries timeUserBeat = new TimeSeries(userArray);
+					
+					/*
+					 * Here Please wirte code with...
+					 * 
+					 * for every music in database...
+					 * TimeSeries musicBeat = new TimeSeries(Read music beat with "double array type");
+					 * 
+					 * Don`t modify below code. Just copy and paste.
+					 * DistanceFunction distFn = DistanceFunctionFactory.getDistFnByName("EuclideanDistance");
+					 * 
+					 * if you want to check in 3 adjacent array...
+					 * TimeWarpInfo infoTSInline = FastDTW.getWarpInfoBetween(timeUserBeat, musicBeat, distFn);
+					 * 
+					 * if you want to check in default array...
+					 * TimeWarpInfo distanceInformation = FastDTW.getWarpInfoBetween(timeUserBeat, musicBeat, 3, distFn);
+					 * 
+					 * distanceInformation.getDistance(); is the distance between two input files.
+					 * Above getDistance()`s return tpye is double type.
+					 * */
+					
+					
+					/*
+					 * Delete below code ( Exist Code... )
+					*/
 					String musicKey = new Comparing(getConfigValue().getDbDirectory(), sUserBeat).getMusicKey();
+					
 					System.gc();
 					if (musicKey!= null) {
 						String musicInfo = database.getMusicInfo(musicKey);
