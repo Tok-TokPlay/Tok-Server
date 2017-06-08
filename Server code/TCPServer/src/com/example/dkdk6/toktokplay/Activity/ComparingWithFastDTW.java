@@ -12,7 +12,7 @@ import com.example.dkdk6.toktokplay.Activity.dtw.TimeWarpInfo;
 import com.example.dkdk6.toktokplay.Activity.timeseries.TimeSeries;
 import com.example.dkdk6.toktokplay.Activity.util.DistanceFunctionFactory;
 
-public class ComparingWithFDTW {
+public class ComparingWithFastDTW {
 	// segment the N1(original array) with size 1000
 	private final static int MIN_ERROR_RANGE = 5;
 
@@ -26,10 +26,9 @@ public class ComparingWithFDTW {
 	private ArrayList<String> n1;
 	private File[] fileList;
 	private String n2s;
-	private Double[] doubleN1;
 	private String musicKey;
 	double[] result;
-	ComparingWithFDTW(String filePath, String n2s) throws IOException {
+	ComparingWithFastDTW(String filePath, String n2s) throws IOException {
 		this.n2s = n2s;
 		
 		//testing if the userBeat correctly comes. 
@@ -58,23 +57,14 @@ public class ComparingWithFDTW {
 		result = new double[fileNumber];
 		for (int fNum = 0; fNum<fileNumber  ; fNum++) {
 			System.out.println((fNum + 1) + " th file Checking now...");
-			int sumOfN1=0;
-			int meanOfN1=0;
 			fileName = fileList[fNum].getName();
 			filePathAndName = filePath + "\\" + fileName;
 			n1 = getN1();
-			for(int i=0;i<n1.size();i++){
-				doubleN1[i] = (double)Float.parseFloat(n1.get(i));
-				//sumOfN1 += (int)Float.parseFloat(n1.get(i));
-			}
 			
-			//meanOfN1 = sumOfN1/n1.size();
 			// to compare each segmentedN1 with n1
-			
 			double segmentedN1[] = new double[SEG_LENGTH];
 			double segmentedN1_1000[] = new double[SEG_LENGTH_1000];
 			int segSize = n1.size() / SEG_LENGTH_1000;
-
 			int i = 0;
 			double distance;
 			int SegLocation = segSize;
@@ -110,9 +100,9 @@ public class ComparingWithFDTW {
 				// finding any SegLocations which makes minimum min value
 				// 0,1,2,3,4
 				System.gc();
-				tsN1 = new TimeSeries(segmentedN1); 
+				
+				tsN1 = new TimeSeries(zNormalization(segmentedN1)); 
 				tsN2 = new TimeSeries(n2); 
-				DistanceFunctionFactory dFunc = new DistanceFunctionFactory();
 				distance = FastDTW.getWarpDistBetween(tsN1, tsN2, DistanceFunctionFactory.getDistFnByName("EuclideanDistance"));
 				System.gc();
 				if (arrLength < 5) {
@@ -161,9 +151,8 @@ public class ComparingWithFDTW {
 					}
 					// check similarity by DTW
 					System.gc();
-					tsN1 = new TimeSeries(segmentedN1_1000); 
+					tsN1 = new TimeSeries(zNormalization(segmentedN1_1000)); 
 					tsN2 = new TimeSeries(n2); 
-					DistanceFunctionFactory dFunc = new DistanceFunctionFactory();
 					distance = FastDTW.getWarpDistBetween(tsN1, tsN2, DistanceFunctionFactory.getDistFnByName("EuclideanDistance"));
 					
 					System.gc();
@@ -198,6 +187,28 @@ public class ComparingWithFDTW {
 		in.close();
 		return arrayList;
 	}
+	double[] zNormalization(double[] T) { 
+		double[] result = new double[T.length];
+		double sum = 0;
+		
+		for(int i = 0; i < T.length; i++) {
+			sum = sum + T[i];
+		}
+		double mean = sum / T.length;
+		
+		sum = 0;
+		for(int i = 0; i < T.length; i++) {
+			sum = sum + (T[i] - mean) * (T[i] - mean);
+		}
+		double std = sum / T.length;
+		std = Math.sqrt(std);
+
+		for(int i = 0; i < T.length; i++) {
+			result[i] = (T[i] - mean) / std;
+		}
+
+		return result;
+	}
 
 	String getMusicKey() {
 		for(int i = 0; i < result.length; i++){
@@ -208,4 +219,5 @@ public class ComparingWithFDTW {
 	int[] getCorrectable() {
 		return correctable;
 	}
+	
 }
