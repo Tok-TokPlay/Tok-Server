@@ -27,7 +27,13 @@ public class ComparingWithFastDTW {
 	private File[] fileList;
 	private String n2s;
 	private String musicKey;
-	double[] result;
+	private double[] likelihood0;
+	private double[] likelihood1;
+	private double[] likelihood2;
+	private double[] likelihood3;
+	private double[] likelihood4;
+	private double[] result;
+	private int min_l;
 
 	ComparingWithFastDTW(String filePath, String n2s) throws IOException {
 		this.n2s = n2s;
@@ -93,6 +99,10 @@ public class ComparingWithFastDTW {
 				for (int j = 0; j < SEG_LENGTH; j++, i++) {
 					segmentedN1_long[j] = (double) Float.parseFloat(n1.get(i));
 				}
+				tsN1 = new TimeSeries(zNormalization(segmentedN1_long));
+				tsN2 = new TimeSeries(DUserBeat);
+				distance = FastDTW.getWarpDistBetween(tsN1, tsN2,
+						DistanceFunctionFactory.getDistFnByName("EuclideanDistance"));
 			}
 			// if it is the last segment of the arrayList, the last length
 			// would be smaller than SEG_LENGTH -> so SEG_LENGTH
@@ -100,23 +110,27 @@ public class ComparingWithFastDTW {
 				for (int j = 0; j < SEG_LENGTH_N2SIZE; j++, i++) {
 					segmentedN1_sizeN2[j] = (double) Float.parseFloat(n1.get(i));
 				}
+				tsN1 = new TimeSeries(zNormalization(segmentedN1_sizeN2));
+				tsN2 = new TimeSeries(DUserBeat);
+				distance = FastDTW.getWarpDistBetween(tsN1, tsN2,
+						DistanceFunctionFactory.getDistFnByName("EuclideanDistance"));
 			}
 			// to store again (about seg_length/3 size) at next turn...
 			i -= SEG_LENGTH_N2SIZE / 3;
 
 			// finding any SegLocations which makes minimum min value
 			// 0,1,2,3,4
-
-			tsN1 = new TimeSeries(zNormalization(segmentedN1_long));
-			tsN2 = new TimeSeries(DUserBeat);
-			distance = FastDTW.getWarpDistBetween(tsN1, tsN2,
-					DistanceFunctionFactory.getDistFnByName("EuclideanDistance"));
-			System.gc();
+			//set 1,2,3,4,5th 
 			if (arrLength < 5) {
+				setLikelihood(arrLength, segmentedN1_long);
 				min[arrLength++] = distance;
 			} else {
 				for (int j = 0; j < MIN_ERROR_RANGE; j++) {
 					if (distance < min[j]) {
+						if(SegLocation != 1)
+							setLikelihood(j, segmentedN1_long);
+						else
+							setLikelihood(i, segmentedN1_sizeN2);
 						min[j] = distance;
 						minSegArr[j] = SegLocation;
 						break;
@@ -133,8 +147,10 @@ public class ComparingWithFastDTW {
 		double min2 = 999;
 
 		for (int l = 0; l < MIN_ERROR_RANGE; l++) {
-			if(min2>min[l])
+			if(min2>min[l]){
 				min2 = min[l];
+				min_l = l;
+			}
 			int k = 0;
 			i = (segSize - minSegArr[l] - 1) * SEG_LENGTH_N2SIZE + (SEG_LENGTH_N2SIZE / 2);
 			// Because the 'minSegArr == 1' means the last segment of the
@@ -164,13 +180,15 @@ public class ComparingWithFastDTW {
 				System.gc();
 				// store the minimum result of DTW
 				if (min2 > distance) {
+					setLikelihood(l, segmentedN1_sizeN2);
+					min_l = l;
 					min2 = distance;
 				}
 				i = i + DUserBeat.length;
 			}
 		}
 		n1.clear();
-		System.out.println(fileName +"min :"+min2);
+		System.out.println(fileName +"_min :"+min2);
 		return min2;
 	}
 
@@ -209,6 +227,40 @@ public class ComparingWithFastDTW {
 		return result;
 	}
 
+	void setLikelihood(int n,double[] userbeat){
+		switch(n){
+		case 0:
+			likelihood0 = userbeat;
+			break;
+		case 1:
+			likelihood1 = userbeat;
+			break;
+		case 2:
+			likelihood2 = userbeat;
+			break;
+		case 3:
+			likelihood3 = userbeat;
+			break;
+		case 4:
+			likelihood4 = userbeat;
+			break;
+		}
+	}
+	String getLikelihood(){
+		switch(min_l){
+		case 0:
+			return likelihood0.toString();
+		case 1:
+			return likelihood1.toString();
+		case 2:
+			return likelihood2.toString();
+		case 3:
+			return likelihood3.toString();
+		case 4:
+			return likelihood4.toString();
+		}
+		return "Likelihood Error";
+	}
 	String getMusicKey() {
 		for (int i = 0; i < result.length; i++) {
 			System.out.println(result[i]);
