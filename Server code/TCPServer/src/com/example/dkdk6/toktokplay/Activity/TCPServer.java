@@ -71,7 +71,8 @@ public class TCPServer implements Runnable {
 					
 					// Read music key value from sub-shell.
 					System.gc();
-					System.out.println(sUserBeat);
+					String WeightedUserBeat = ChangeUserBeat(sUserBeat);
+					System.out.println(WeightedUserBeat);
 					
 					// Get File names...
 					File dbDirectoryPath = new File(this.getConfigValue().getDbDirectory());
@@ -81,7 +82,7 @@ public class TCPServer implements Runnable {
 					ProcessJob[] jobList = new ProcessJob[fileList.length];
 					
 					for(int i = 0; i < fileList.length; i++)	{
-						jobList[i] = new ProcessJob(fileList[i].getName(), sUserBeat, this.getConfigValue().getDbDirectory());
+						jobList[i] = new ProcessJob(fileList[i].getName(), WeightedUserBeat, this.getConfigValue().getDbDirectory());
 					}
 					
 					MultiProcessing processor = new MultiProcessing(jobList, 20);
@@ -126,6 +127,12 @@ public class TCPServer implements Runnable {
 		}
 	}
 
+	public String ChangeUserBeat(String userBeat){
+		for(int i=0;i<userBeat.length();i++){
+			
+			userBeat.charAt(i);
+		}
+	}
 	public TCPConfig getConfigValue() {
 		return configValue;
 	}

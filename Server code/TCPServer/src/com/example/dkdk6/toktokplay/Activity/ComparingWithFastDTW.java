@@ -170,6 +170,7 @@ public class ComparingWithFastDTW {
 			}
 		}
 		n1.clear();
+		System.out.println(fileName +"min :"+min2);
 		return min2;
 	}
 
