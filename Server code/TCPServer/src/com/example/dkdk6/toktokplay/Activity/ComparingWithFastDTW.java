@@ -17,7 +17,7 @@ public class ComparingWithFastDTW {
 	// segment the N1(original array) with size 1000
 	private final static int MIN_ERROR_RANGE = 5;
 
-	private int SEG_LENGTH_1000;
+	private int SEG_LENGTH_N2SIZE;
 	private int SEG_LENGTH;
 	private int correctable[];
 	private int NumberOfFile;
@@ -36,8 +36,8 @@ public class ComparingWithFastDTW {
 			System.out.print(n2s.charAt(i) - '0');
 		}
 		System.out.println("^n2");
-		SEG_LENGTH_1000 = n2s.length();
-		SEG_LENGTH = SEG_LENGTH_1000 + (SEG_LENGTH_1000 / 3);
+		SEG_LENGTH_N2SIZE = n2s.length();
+		SEG_LENGTH = SEG_LENGTH_N2SIZE + (SEG_LENGTH_N2SIZE / 3);
 		correctable = new int[SEG_LENGTH];
 
 		this.filePath = filePath;
@@ -70,9 +70,9 @@ public class ComparingWithFastDTW {
 	public double compareFile(String fileName,String userBeat) throws IOException {
 		ArrayList<String> n1 = getN1();
 		// to compare each segmentedN1 with n1
-		double segmentedN1[] = new double[SEG_LENGTH];
-		double segmentedN1_1000[] = new double[SEG_LENGTH_1000];
-		int segSize = n1.size() / SEG_LENGTH_1000;
+		double segmentedN1_long[] = new double[SEG_LENGTH];
+		double segmentedN1_sizeN2[] = new double[SEG_LENGTH_N2SIZE];
+		int segSize = n1.size() / SEG_LENGTH_N2SIZE;
 		int i = 0;
 		double distance;
 		double[] DUserBeat = new double[userBeat.length()];
@@ -90,23 +90,23 @@ public class ComparingWithFastDTW {
 		while (SegLocation > 0) {
 			if (SegLocation != 1) {
 				for (int j = 0; j < SEG_LENGTH; j++, i++) {
-					segmentedN1[j] = (double) Float.parseFloat(n1.get(i));
+					segmentedN1_long[j] = (double) Float.parseFloat(n1.get(i));
 				}
 			}
 			// if it is the last segment of the arrayList, the last length
 			// would be smaller than SEG_LENGTH -> so SEG_LENGTH
 			else {
-				for (int j = 0; j < SEG_LENGTH_1000; j++, i++) {
-					segmentedN1_1000[j] = (double) Float.parseFloat(n1.get(i));
+				for (int j = 0; j < SEG_LENGTH_N2SIZE; j++, i++) {
+					segmentedN1_sizeN2[j] = (double) Float.parseFloat(n1.get(i));
 				}
 			}
 			// to store again (about seg_length/3 size) at next turn...
-			i -= SEG_LENGTH_1000 / 3;
+			i -= SEG_LENGTH_N2SIZE / 3;
 
 			// finding any SegLocations which makes minimum min value
 			// 0,1,2,3,4
 
-			tsN1 = new TimeSeries(zNormalization(segmentedN1));
+			tsN1 = new TimeSeries(zNormalization(segmentedN1_long));
 			tsN2 = new TimeSeries(DUserBeat);
 			distance = FastDTW.getWarpDistBetween(tsN1, tsN2,
 					DistanceFunctionFactory.getDistFnByName("EuclideanDistance"));
@@ -129,35 +129,32 @@ public class ComparingWithFastDTW {
 		// And I will check more detail around this part.
 		// I wanted to make this another function but there is no time........
 		int tmpi;
-		double min2 = 999999999;
+		double min2 = -1;
 
 		for (int l = 0; l < MIN_ERROR_RANGE; l++) {
+			min2 = min[l];
 			int k = 0;
-			i = (segSize - minSegArr[l] - 1) * SEG_LENGTH_1000 + (SEG_LENGTH_1000 / 3);
+			i = (segSize - minSegArr[l] - 1) * SEG_LENGTH_N2SIZE + (SEG_LENGTH_N2SIZE / 2);
 			// Because the 'minSegArr == 1' means the last segment of the
 			// n1.
 			if (minSegArr[l] == 1) {
-				k = 2; // Do this 'for'loop just 3 time!
-			} else if (minSegArr[l] == segSize) { // if the similarity part
-													// is
-													// the first segment of
-													// the
-													// n1.
-				k = 2;
-				i = 0;
+				k = 1; // Do this 'for'loop just 3 time!
+			} else if (minSegArr[l] == segSize) { 
+			// if the similarity part is the first segment of the n1.
+				k = 1;
+				i = SEG_LENGTH_N2SIZE / 2;
 			}
 
-			for (; k < 5; k++) {
+			for (; k < 2; k++) {
 				tmpi = i;
 				// <Char> to integer
 				// temporary, I set tmpi boundary
-				for (int j = 0; j < SEG_LENGTH_1000 && tmpi < n1.size(); j++, tmpi++) {
-					segmentedN1_1000[j] = (int) Float.parseFloat(n1.get(tmpi));
+				for (int j = 0; j < SEG_LENGTH_N2SIZE && tmpi < n1.size(); j++, tmpi++) {
+					segmentedN1_sizeN2[j] = (int) Float.parseFloat(n1.get(tmpi));
 					System.gc();
 				}
 				// check similarity by DTW
-				System.gc();
-				tsN1 = new TimeSeries(zNormalization(segmentedN1_1000));
+				tsN1 = new TimeSeries(zNormalization(segmentedN1_sizeN2));
 				tsN2 = new TimeSeries(DUserBeat);
 				distance = FastDTW.getWarpDistBetween(tsN1, tsN2,
 						DistanceFunctionFactory.getDistFnByName("EuclideanDistance"));
@@ -167,7 +164,7 @@ public class ComparingWithFastDTW {
 				if (min2 > distance) {
 					min2 = distance;
 				}
-				i = i + DUserBeat.length / 3;
+				i = i + DUserBeat.length;
 			}
 		}
 		n1.clear();
