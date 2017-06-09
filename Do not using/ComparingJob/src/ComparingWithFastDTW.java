@@ -1,5 +1,3 @@
-package com.example.dkdk6.toktokplay.Activity;
-
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -8,10 +6,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
 
-import com.example.dkdk6.toktokplay.Activity.dtw.FastDTW;
-import com.example.dkdk6.toktokplay.Activity.dtw.TimeWarpInfo;
-import com.example.dkdk6.toktokplay.Activity.timeseries.TimeSeries;
-import com.example.dkdk6.toktokplay.Activity.util.DistanceFunctionFactory;
+import com.dtw.FastDTW;
+import com.dtw.TimeWarpInfo;
+import com.timeseries.TimeSeries;
+import com.util.DistanceFunctionFactory;
 
 public class ComparingWithFastDTW {
 	// segment the N1(original array) with size 1000

@@ -4,6 +4,7 @@
  */
 package com.example.dkdk6.toktokplay.Activity;
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
@@ -72,44 +73,21 @@ public class TCPServer implements Runnable {
 					System.gc();
 					System.out.println(sUserBeat);
 					
+					// Get File names...
+					File dbDirectoryPath = new File(this.getConfigValue().getDbDirectory());
+					File[] fileList = dbDirectoryPath.listFiles();
 					
+					// And make jobs for files.
+					ProcessJob[] jobList = new ProcessJob[fileList.length];
 					
-					
-					
-					
-					// Use TimeSereies Class like this...
-					// Create with Double Array Type, not array list.
-					double[] userArray = new double[inputData.getList().size()];
-					for(int arraySize = 0; arraySize < inputData.getList().size(); arraySize++)	{
-						userArray[arraySize] = inputData.getList().get(arraySize);
+					for(int i = 0; i < fileList.length; i++)	{
+						jobList[i] = new ProcessJob(fileList[i].getName(), sUserBeat, this.getConfigValue().getDbDirectory());
 					}
-					TimeSeries timeUserBeat = new TimeSeries(userArray);
 					
-					/*
-					 * Here Please wirte code with...
-					 * 
-					 * for every music in database...
-					 * TimeSeries musicBeat = new TimeSeries(Read music beat with "double array type");
-					 * 
-					 * Don`t modify below code. Just copy and paste.
-					 * DistanceFunction distFn = DistanceFunctionFactory.getDistFnByName("EuclideanDistance");
-					 * 
-					 * if you want to check in 3 adjacent array...
-					 * TimeWarpInfo infoTSInline = FastDTW.getWarpInfoBetween(timeUserBeat, musicBeat, distFn);
-					 * 
-					 * if you want to check in default array...
-					 * TimeWarpInfo distanceInformation = FastDTW.getWarpInfoBetween(timeUserBeat, musicBeat, 3, distFn);
-					 * 
-					 * distanceInformation.getDistance(); is the distance between two input files.
-					 * Above getDistance()`s return tpye is double type.
-					 * */
+					MultiProcessing processor = new MultiProcessing(jobList, 20);
+					processor.multiProcessStart();
 					
-					
-					/*
-					 * Delete below code ( Exist Code... )
-					*/
-					String musicKey = new Comparing(getConfigValue().getDbDirectory(), sUserBeat).getMusicKey();
-					
+					String musicKey = processor.getMusicKey();
 					System.gc();
 					if (musicKey!= null) {
 						String musicInfo = database.getMusicInfo(musicKey);
