@@ -129,10 +129,11 @@ public class ComparingWithFastDTW {
 		// And I will check more detail around this part.
 		// I wanted to make this another function but there is no time........
 		int tmpi;
-		double min2 = -1;
+		double min2 = 999;
 
 		for (int l = 0; l < MIN_ERROR_RANGE; l++) {
-			min2 = min[l];
+			if(min2>min[l])
+				min2 = min[l];
 			int k = 0;
 			i = (segSize - minSegArr[l] - 1) * SEG_LENGTH_N2SIZE + (SEG_LENGTH_N2SIZE / 2);
 			// Because the 'minSegArr == 1' means the last segment of the
