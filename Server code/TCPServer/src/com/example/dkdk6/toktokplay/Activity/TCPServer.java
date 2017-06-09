@@ -128,10 +128,14 @@ public class TCPServer implements Runnable {
 	}
 
 	public String ChangeUserBeat(String userBeat){
+		String weightedBeat="";
+		
 		for(int i=0;i<userBeat.length();i++){
 			
-			userBeat.charAt(i);
+			weightedBeat+=(Integer.parseInt((""+userBeat.charAt(i)))*9);
+			
 		}
+		return weightedBeat;
 	}
 	public TCPConfig getConfigValue() {
 		return configValue;
