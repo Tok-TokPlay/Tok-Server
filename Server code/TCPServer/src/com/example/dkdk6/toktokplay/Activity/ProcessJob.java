@@ -28,14 +28,14 @@ public class ProcessJob implements Runnable{
 		String[] processJob = {"java","-jar", "ComparingJob.jar", dbDirectory, fileName, userBeat};
 		try {
 			Process process = new ProcessBuilder(processJob).start();
-			/*
-			 * If you want to see debugging tools...
+			
+			// If you want to see debugging tools...
 			SequenceInputStream seqIn = new SequenceInputStream(process.getInputStream(), process.getErrorStream());	
 			Scanner s = new Scanner(seqIn); 
 			while (s.hasNextLine() == true) { 
 				System.out.println(s.nextLine()); 
 				}	
-			*/
+			
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

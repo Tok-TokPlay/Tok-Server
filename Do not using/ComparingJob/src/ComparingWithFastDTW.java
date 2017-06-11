@@ -36,10 +36,6 @@ public class ComparingWithFastDTW {
 	ComparingWithFastDTW(String filePath, String n2s) throws IOException {
 		this.n2s = n2s;
 		// testing if the userBeat correctly comes.
-		for (int i = 0; i < n2s.length(); i++) {
-			System.out.print(n2s.charAt(i) - '0');
-		}
-		System.out.println("^n2");
 		SEG_LENGTH_N2SIZE = n2s.length();
 		SEG_LENGTH = SEG_LENGTH_N2SIZE + (SEG_LENGTH_N2SIZE / 3);
 		correctable = new int[SEG_LENGTH];
@@ -52,6 +48,7 @@ public class ComparingWithFastDTW {
 
 		// fileName = filePath + "\\" + fileNumber + ".txt";
 	}
+	/*
 	void compare() throws IOException {
 		result = new double[NumberOfFile];
 		for (int fNum = 0; fNum < NumberOfFile; fNum++) {
@@ -71,6 +68,7 @@ public class ComparingWithFastDTW {
 		}
 		musicKey = fileList[minI].getName();
 	}
+	*/
 	public double compareFile(String fileName,String userBeat) throws IOException {
 		this.filePathAndName = this.filePath + "\\" + fileName;
 		ArrayList<String> n1 = getN1();
@@ -98,7 +96,7 @@ public class ComparingWithFastDTW {
 					segmentedN1_long[j] = (double) Float.parseFloat(n1.get(i));
 				}
 				tsN1 = new TimeSeries(zNormalization(segmentedN1_long));
-				tsN2 = new TimeSeries(DUserBeat);
+				tsN2 = new TimeSeries(zNormalization(DUserBeat));
 				distance = FastDTW.getWarpDistBetween(tsN1, tsN2,
 						DistanceFunctionFactory.getDistFnByName("EuclideanDistance"));
 			}
@@ -109,7 +107,7 @@ public class ComparingWithFastDTW {
 					segmentedN1_sizeN2[j] = (double) Float.parseFloat(n1.get(i));
 				}
 				tsN1 = new TimeSeries(zNormalization(segmentedN1_sizeN2));
-				tsN2 = new TimeSeries(DUserBeat);
+				tsN2 = new TimeSeries(zNormalization(DUserBeat));
 				distance = FastDTW.getWarpDistBetween(tsN1, tsN2,
 						DistanceFunctionFactory.getDistFnByName("EuclideanDistance"));
 			}
@@ -142,7 +140,7 @@ public class ComparingWithFastDTW {
 		// And I will check more detail around this part.
 		// I wanted to make this another function but there is no time........
 		int tmpi;
-		double min2 = 999;
+		double min2 = 99999999;
 
 		for (int l = 0; l < MIN_ERROR_RANGE; l++) {
 			if(min2>min[l]){
@@ -167,11 +165,10 @@ public class ComparingWithFastDTW {
 				// temporary, I set tmpi boundary
 				for (int j = 0; j < SEG_LENGTH_N2SIZE && tmpi < n1.size(); j++, tmpi++) {
 					segmentedN1_sizeN2[j] = (int) Float.parseFloat(n1.get(tmpi));
-					System.gc();
 				}
 				// check similarity by DTW
 				tsN1 = new TimeSeries(zNormalization(segmentedN1_sizeN2));
-				tsN2 = new TimeSeries(DUserBeat);
+				tsN2 = new TimeSeries(zNormalization(DUserBeat));
 				distance = FastDTW.getWarpDistBetween(tsN1, tsN2,
 						DistanceFunctionFactory.getDistFnByName("EuclideanDistance"));
 
@@ -186,7 +183,7 @@ public class ComparingWithFastDTW {
 			}
 		}
 		n1.clear();
-		System.out.println(fileName +"_min :"+min2);
+		System.out.println(fileName +"      _min :"+min2);
 		return min2;
 	}
 
@@ -260,9 +257,6 @@ public class ComparingWithFastDTW {
 		return "Likelihood Error";
 	}
 	String getMusicKey() {
-		for (int i = 0; i < result.length; i++) {
-			System.out.println(result[i]);
-		}
 		return musicKey;
 	}
 

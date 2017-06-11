@@ -5,6 +5,7 @@
 package com.example.dkdk6.toktokplay.Activity;
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
@@ -73,7 +74,15 @@ public class TCPServer implements Runnable {
 					System.gc();
 					String WeightedUserBeat = ChangeUserBeat(sUserBeat);
 					System.out.println(WeightedUserBeat);
-					
+					/*
+					FileWriter fw = new FileWriter(
+							"C:\\Users\\4F\\Desktop\\musicFile\\tx\\053 »Ò√∂-01-≥™∫Ò¿· (Sweet Dream).txt");
+					for (int i = 0; i < WeightedUserBeat.length(); i++) {
+						fw.write(WeightedUserBeat.charAt(i));
+						fw.write("\r\n");
+					}
+					fw.close();
+					*/
 					// Get File names...
 					File dbDirectoryPath = new File(this.getConfigValue().getDbDirectory());
 					File[] fileList = dbDirectoryPath.listFiles();
