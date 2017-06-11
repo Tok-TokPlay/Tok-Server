@@ -84,7 +84,7 @@ public class TCPServer implements Runnable {
 					fw.close();
 					
 					// Get File names...
-					/*
+					
 					File dbDirectoryPath = new File(this.getConfigValue().getDbDirectory());
 					File[] fileList = dbDirectoryPath.listFiles();
 					
@@ -108,8 +108,11 @@ public class TCPServer implements Runnable {
 					System.out.println(musicKey);
 					System.gc();
 					if (musicKey!= null) {
-						String musicInfo = database.getMusicInfo(musicKey);
-						
+						String musicInfo = "3";
+						for(int i=0; i<3; i++){
+							String musicInfoIndex = database.getMusicInfo(musicKey[i]);
+							musicInfo = musicInfo + ":" + musicInfoIndex; 
+						}
 						// Music name for music key value is always exist.
 						// Not need to check if this value is null.
 						
@@ -127,7 +130,7 @@ public class TCPServer implements Runnable {
 					// Close not using stream controller.
 					is.close();
 					ois.close();
-					*/
+					
 				} 
 				catch (Exception e) {
 					e.printStackTrace();
