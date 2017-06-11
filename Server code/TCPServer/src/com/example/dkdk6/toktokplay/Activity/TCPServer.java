@@ -89,6 +89,7 @@ public class TCPServer implements Runnable {
 					processor.multiProcessStart();
 					
 					String musicKey = processor.getMusicKey();
+					System.out.println(musicKey);
 					System.gc();
 					if (musicKey!= null) {
 						String musicInfo = database.getMusicInfo(musicKey);
