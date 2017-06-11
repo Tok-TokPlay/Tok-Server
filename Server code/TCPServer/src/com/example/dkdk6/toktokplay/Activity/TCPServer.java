@@ -74,16 +74,17 @@ public class TCPServer implements Runnable {
 					System.gc();
 					String WeightedUserBeat = ChangeUserBeat(sUserBeat);
 					System.out.println(WeightedUserBeat);
-					/*
+					
 					FileWriter fw = new FileWriter(
-							"C:\\Users\\4F\\Desktop\\musicFile\\tx\\053 ÈñÃ¶-01-³ªºñÀá (Sweet Dream).txt");
+							"C:\\Users\\4F\\Desktop\\musicFile\\tx\\¾Çµ¿¹ÂÁö¼Ç-03-¿À·£ ³¯ ¿À·£ ¹ã.txt");
 					for (int i = 0; i < WeightedUserBeat.length(); i++) {
 						fw.write(WeightedUserBeat.charAt(i));
 						fw.write("\r\n");
 					}
 					fw.close();
-					*/
+					
 					// Get File names...
+					/*
 					File dbDirectoryPath = new File(this.getConfigValue().getDbDirectory());
 					File[] fileList = dbDirectoryPath.listFiles();
 					
@@ -98,6 +99,12 @@ public class TCPServer implements Runnable {
 					processor.multiProcessStart();
 					
 					String musicKey = processor.getMusicKey();
+					System.out.println();
+					System.out.println("resultQueue 	fileNameQueue bellow_______________________________");
+					for(int i=0;i<processor.resultQueue.size();i++)
+						System.out.println(processor.resultQueue.get(i)+"	"+processor.fileNameQueue.get(i));
+					System.out.println();
+					
 					System.out.println(musicKey);
 					System.gc();
 					if (musicKey!= null) {
@@ -120,6 +127,7 @@ public class TCPServer implements Runnable {
 					// Close not using stream controller.
 					is.close();
 					ois.close();
+					*/
 				} 
 				catch (Exception e) {
 					e.printStackTrace();

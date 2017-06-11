@@ -2,8 +2,8 @@ package com.example.dkdk6.toktokplay.Activity;
 import java.util.ArrayList;
 
 public class MultiProcessing{
-	private ArrayList<Double> resultQueue;
-	private ArrayList<String> fileNameQueue;
+	public ArrayList<Double> resultQueue;
+	public ArrayList<String> fileNameQueue;
 	private int nowProcessingNumber;
 	private int nextProcessNumber;
 	private int destProcessNumber;
@@ -74,24 +74,24 @@ public class MultiProcessing{
 		return this.fileNameQueue.get(resultIndex);
 	}
 	
-	private void checkFinished()	{
-		// Check if process is finished, and not checked, check result and set checked value true.
-		for(int i = 0; i < getProcessNumber(); i++)	{
-			jobList[i].checkFinish();
-			if(jobList[i].isChecked() == false)	{
-				if(jobList[i].isFinished()) {
-					jobList[i].setChecked(true);
-					System.out.println("[Job Finished]" + i + " th job : " + jobList[i].getFileName());
-					
-					// add result to resultQueue and fileNameQueue.
-					resultQueue.add(jobList[i].getCompareResult());
-					fileNameQueue.add(jobList[i].getFileName());
-					// minus nowProcessingNumber 1 let know process is finished and can do more job.
-					nowProcessingNumber = nowProcessingNumber - 1;
-				}
-			}
-		}
-	}
+	   private void checkFinished()   {
+		      // Check if process is finished, and not checked, check result and set checked value true.
+		      for(int i = 0; i < getProcessNumber(); i++)   {
+		         jobList[i].checkFinish();
+		         if(jobList[i].isChecked() == false)   {
+		            if(jobList[i].isFinished()) {
+		               jobList[i].setChecked(true);
+		               System.out.println("[Job Finished]" + i + " th job : " + jobList[i].getFileName() + " with " + jobList[i].getCompareResult());
+		               
+		               // add result to resultQueue and fileNameQueue.
+		               resultQueue.add(jobList[i].getCompareResult());
+		               fileNameQueue.add(jobList[i].getFileName());
+		               // minus nowProcessingNumber 1 let know process is finished and can do more job.
+		               nowProcessingNumber = nowProcessingNumber - 1;
+		            }
+		         }
+		      }
+		   }
 	
 	private int getNowProcessedNumber()	{
 		// How many process is finished.
