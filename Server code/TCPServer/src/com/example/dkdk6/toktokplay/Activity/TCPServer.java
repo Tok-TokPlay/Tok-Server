@@ -76,7 +76,7 @@ public class TCPServer implements Runnable {
 					System.out.println(WeightedUserBeat);
 					
 					FileWriter fw = new FileWriter(
-							"C:\\Users\\4F\\Desktop\\musicFile\\tx\\¾Çµ¿¹ÂÁö¼Ç-03-¿À·£ ³¯ ¿À·£ ¹ã.txt");
+							"C:\\Users\\4F\\Desktop\\musicFile\\tx\\G-DRAGON-04-¹«Á¦(Ùíð¹) (Untitled, 2014).txt");
 					for (int i = 0; i < WeightedUserBeat.length(); i++) {
 						fw.write(WeightedUserBeat.charAt(i));
 						fw.write("\r\n");
@@ -105,7 +105,7 @@ public class TCPServer implements Runnable {
 					MultiProcessing processor = new MultiProcessing(jobList, 20);
 					processor.multiProcessStart();
 					
-					String musicKey = processor.getMusicKey();
+					String[] musicKey = processor.getMusicKey();
 					System.out.println();
 					System.out.println("resultQueue 	fileNameQueue bellow_______________________________");
 					for(int i=0;i<processor.resultQueue.size();i++)
