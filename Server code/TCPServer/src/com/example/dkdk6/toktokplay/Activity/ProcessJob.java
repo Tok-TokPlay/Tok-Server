@@ -1,4 +1,5 @@
-package com.example.dkdk6.toktokplay.Activity;
+
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -72,10 +73,13 @@ public class ProcessJob implements Runnable{
 		File resultFile = new File(this.dbDirectory + "\\result\\"+ this.fileName.split(".txt")[0] + "resultFile.txt");
 			if (resultFile.exists())	{
 				FileReader resultReader;
+				BufferedReader  lineReader;
 				try {
 					resultReader = new FileReader(this.dbDirectory + "\\result\\"+ this.fileName.split(".txt")[0] + "resultFile.txt");
+					lineReader = new BufferedReader(resultReader);
 					// Save it to compareResult.
-					this.compareResult = resultReader.read();
+					this.compareResult = Double.valueOf(lineReader.readLine());
+					System.out.println("We read " + this.fileName + " with "  + this.compareResult );
 					resultReader.close();
 				} catch (FileNotFoundException e) {
 					e.printStackTrace();

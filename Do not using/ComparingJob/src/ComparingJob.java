@@ -30,9 +30,11 @@ public class ComparingJob {
 				// Create new one.
 				
 				FileWriter resultWriter = new FileWriter(resultFile, true) ;
+				System.out.println("We get  " + argc[1] + " : " + smallestValue);
 				
 				// Write value and finish act.
 				resultWriter.write(String.valueOf(smallestValue));
+				System.out.println("We write  " + argc[1] + " : " + String.valueOf(smallestValue));
 				resultWriter.flush();
 				resultWriter.close();
 

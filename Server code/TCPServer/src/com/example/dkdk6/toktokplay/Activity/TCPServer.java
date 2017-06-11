@@ -85,16 +85,23 @@ public class TCPServer implements Runnable {
 					
 					// Get File names...
 					/*
-					File dbDirectoryPath = new File(this.getConfigValue().getDbDirectory());
-					File[] fileList = dbDirectoryPath.listFiles();
-					
-					// And make jobs for files.
-					ProcessJob[] jobList = new ProcessJob[fileList.length];
-					
+					// To Remove result folder, check only file number.
+					int jobNumber = 0;
 					for(int i = 0; i < fileList.length; i++)	{
-						jobList[i] = new ProcessJob(fileList[i].getName(), WeightedUserBeat, this.getConfigValue().getDbDirectory());
+						if(fileList[i].isFile()){
+							jobNumber++;
+						}
 					}
 					
+					ProcessJob[] jobList = new ProcessJob[jobNumber];
+					jobNumber = 0;
+					
+					for(int i = 0; i < fileList.length; i++)	{
+						if(fileList[i].isFile()){
+							jobList[jobNumber] = new ProcessJob(fileList[i].getName(), WeightedUserBeat, DB_DIR);
+							jobNumber++;
+						}
+					}
 					MultiProcessing processor = new MultiProcessing(jobList, 20);
 					processor.multiProcessStart();
 					
