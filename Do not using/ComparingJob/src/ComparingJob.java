@@ -17,10 +17,15 @@ public class ComparingJob {
 			try {
 				comparing = new ComparingWithFastDTW(argc[0], argc[2]);
 				smallestValue = comparing.compareFile(argc[1], argc[2]);
-				File resultFile = new File(argc[0] + "\\" + argc[1].split(".txt")[0] + "resultFile.txt");
-				
-				resultFile.delete();
-				// delete exist file.
+				File resultFile = new File(argc[0] + "\\result\\" + argc[1].split(".txt")[0] + "resultFile.txt");
+				File resultDir = new File(argc[0] + "\\result\\");
+				if(resultDir.exists() == false)	{
+					resultDir.mkdirs();
+				}
+				if(resultFile.exists())	{
+					// delete exist file.
+					resultFile.delete();
+				}
 				resultFile.createNewFile();
 				// Create new one.
 				
@@ -30,6 +35,7 @@ public class ComparingJob {
 				resultWriter.write(String.valueOf(smallestValue));
 				resultWriter.flush();
 				resultWriter.close();
+
 			} catch (IOException e) {
 				e.printStackTrace();
 				// Do nothing but get error code.

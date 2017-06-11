@@ -43,6 +43,8 @@ public class MultiProcessing{
 			processStart(threadList);
 			checkTime++;
 		}
+		// Check if all process is finished.
+		checkFinished();
 	}
 
 	private void processStart(Thread[] threadList)	{

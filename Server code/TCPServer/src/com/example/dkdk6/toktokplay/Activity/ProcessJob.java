@@ -69,11 +69,11 @@ public class ProcessJob implements Runnable{
 	
 	private boolean readCompareResult()	{
 		// read fileName.split(".txt")[0] + resultFile + .txt and get CompareResult.
-		File resultFile = new File(this.dbDirectory + "\\"+ this.fileName.split(".txt")[0] + "resultFile.txt");
+		File resultFile = new File(this.dbDirectory + "\\result\\"+ this.fileName.split(".txt")[0] + "resultFile.txt");
 			if (resultFile.exists())	{
 				FileReader resultReader;
 				try {
-					resultReader = new FileReader(this.dbDirectory + "\\"+ this.fileName.split(".txt")[0] + "resultFile.txt");
+					resultReader = new FileReader(this.dbDirectory + "\\result\\"+ this.fileName.split(".txt")[0] + "resultFile.txt");
 					// Save it to compareResult.
 					this.compareResult = resultReader.read();
 					resultReader.close();
