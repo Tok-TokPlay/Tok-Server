@@ -16,8 +16,8 @@ public class TokServer {
 
 	public static void main(String[] arg) throws ClassNotFoundException, SQLException {
 		if(arg.length == 3) {
-			serverConfig = new TCPConfig(arg[0], Integer.parseInt(arg[1]), arg[2]);
-			musicDB = new MusicDataBase();
+			serverConfig = new TCPConfig(arg[0], Integer.parseInt(arg[1]), arg[2] + "/txt");
+			musicDB = new MusicDataBase(arg[2] + "/music");
 		}
 		else {
 			System.out.println("Please input in order with IP, Port, DB_Directory please...");

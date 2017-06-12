@@ -15,6 +15,7 @@ public class MusicDataBase {
 	private String url = "jdbc:mysql://localhost:3306/o2";
 	private String user = "root";
 	private String password = "111111";
+	private String musicPath;
 	
 	public MusicDataBase() throws ClassNotFoundException, SQLException{
 		Class.forName(driverName);
@@ -23,6 +24,16 @@ public class MusicDataBase {
 		connection = DriverManager.getConnection(url, user, password);
 		statement = connection.createStatement();
 		// Make connection with Database finished.
+	}
+	
+	public MusicDataBase(String filePath) throws ClassNotFoundException, SQLException{
+		Class.forName(driverName);
+		// Add class driverName into RAM.
+		// We can use this class after this code.
+		connection = DriverManager.getConnection(url, user, password);
+		statement = connection.createStatement();
+		// Make connection with Database finished.
+		this.musicPath = filePath;
 	}
 	
 	public String getMusicInfo(String key){
@@ -49,34 +60,6 @@ public class MusicDataBase {
 		return musicInfo;
 	}
 	
-	/*public String getMusicSinger(String key){
-		// Get music singer with key value ( fileName ).
-		ResultSet resultSet;
-		String musicSinger = "";
-		String sql = "SELECT * FROM toktok WHERE musicKey=" + key + ";";
-		try {
-			// Get Value with given SQL Query at statement.
-			resultSet = statement.executeQuery(sql);
-			// Get music singer from result.
-			musicSinger = resultSet.getString("singer");
-			resultSet.close();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return musicSinger;
-	}*/
-	
-	/*public void addMusic(String musicName, String musicSinger, String fileName ) {
-		// append new music table to toktok entity.
-		// entity have 3 attribute, name, singer, file name ( which is key value for musics. )
-		String sql = "INSERT INTO toktok(music, singer, file) VALUES ('" + musicName + "', '" + musicSinger + "', '" + fileName + "')";
-		try {
-			statement.executeUpdate(sql);
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-	}*/
-	
 	public void initTable()	{
 		// Initialize table if beatract python module`s version is changed.
 	}
@@ -91,5 +74,8 @@ public class MusicDataBase {
 		}catch (SQLException e){
 			e.getStackTrace();
 		}
+	}
+	public String getMusicPath()	{
+		return this.musicPath;
 	}
 }

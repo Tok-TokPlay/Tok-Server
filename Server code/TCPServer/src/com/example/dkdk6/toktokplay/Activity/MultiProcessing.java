@@ -67,11 +67,12 @@ public class MultiProcessing {
 		String[] result = new String[3];
 		int resultIndex = 0;
 		// As big value to check smallest value.
-		for (int j = 0; j < 3; j++){
+		for (int j = 0; j < result.length; j++)	{
 			double resultValue = 1000000;
+			resultIndex = 0;
 			for (int i = 0; i < getProcessNumber(); i++) {
 				// Find smallest value of resultQueue.
-				if (resultValue > resultQueue.get(i)) {
+				if (resultValue > resultQueue.get(i) && resultQueue.get(i) > 10) {
 					resultValue = resultQueue.get(i);
 					resultIndex = i;
 				}

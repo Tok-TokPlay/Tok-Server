@@ -47,7 +47,7 @@ public class TCPServer implements Runnable {
 	@Override
 	public void run() {
 		try {
-			new TableInit();
+			new TableInit(database.getMusicPath());
 			// Print now IP and Port.
 			System.out
 					.println("Server: Connecting with IP:["
@@ -100,43 +100,68 @@ public class TCPServer implements Runnable {
 */
 					// Get File names...
 
-					File dbDirectoryPath = new File(this.getConfigValue()
-							.getDbDirectory());
+					File dbDirectoryPath = new File(this.getConfigValue().getDbDirectory());
 
 					File[] fileList = dbDirectoryPath.listFiles();
+					
 					int fileNumber = 0;
+					
 					for (int i = 0; i < fileList.length; i++) {
 						if (fileList[i].isFile()) {
 							fileNumber++;
 						}
 					}
+					// Save file for user beat
 
+					File beatFile = new File(this.getConfigValue().getDbDirectory() + "\\userBeat\\" +  "userBeat.txt");
+					File beatDir = new File(this.getConfigValue().getDbDirectory() + "\\userBeat\\");
+					
+					if(beatDir.exists() == false)	{
+						beatDir.mkdirs();
+					}
+					if(beatFile.exists())	{
+						// delete exist file.
+						beatFile.delete();
+					}
+					beatFile.createNewFile();
+					// Create new one.
+					
+					FileWriter resultWriter = new FileWriter(beatFile, true) ;
+					
+					// Write value and finish act.
+					resultWriter.write(String.valueOf(WeightedUserBeat));
+					resultWriter.flush();
+					resultWriter.close();
+					
 					// And make jobs for files.
 					ProcessJob[] jobList = new ProcessJob[fileNumber];
-
+					
 					fileNumber=0;
 					for (int i = 0; i < fileList.length; i++) {
 						if (fileList[i].isFile()) {
-							jobList[fileNumber] = new ProcessJob(
-									fileList[i].getName(), WeightedUserBeat,
+							jobList[fileNumber] = new ProcessJob(fileList[i].getName(), 
+									this.getConfigValue().getDbDirectory() + "\\userBeat\\" +  "userBeat.txt", 
 									this.getConfigValue().getDbDirectory());
 							fileNumber++;
 						}
 					}
 
-					MultiProcessing processor = new MultiProcessing(jobList, 20);
+					MultiProcessing processor = new MultiProcessing(jobList, 10);
 					processor.multiProcessStart();
 
 					String[] musicKey = processor.getMusicKey();
+					
 					System.out.println();
-					System.out
-							.println("resultQueue    fileNameQueue bellow_______________________________");
-					for (int i = 0; i < processor.resultQueue.size(); i++)
-						System.out.println(processor.resultQueue.get(i) + "   "
-								+ processor.fileNameQueue.get(i));
+					System.out.println("resultQueue    fileNameQueue bellow_______________________________");
+					
+					for (int i = 0; i < processor.resultQueue.size(); i++)	{
+						System.out.println(processor.resultQueue.get(i) + "   " + processor.fileNameQueue.get(i));
+					}
+					
 					System.out.println();
-
-					System.out.println(musicKey);
+					for(int i = 0; i < musicKey.length; i++)	{
+						System.out.println(musicKey[i]);
+					}
 					System.gc();
 					if (musicKey != null) {
 						String musicInfo = "3";

@@ -30,7 +30,6 @@ public class DBTableInsert{
 			//insert ½ÇÇà
 			String sql = "INSERT INTO toktok(musicKey, music, singer) VALUES ('" + musicKey + "', '" + music + "', '" + singer + "');";
 			statement.executeUpdate(sql);
-			System.out.println("insert success");
 			
 			
 		}catch (ClassNotFoundException e){
