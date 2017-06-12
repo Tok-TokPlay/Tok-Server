@@ -146,7 +146,7 @@ public class TCPServer implements Runnable {
 						}
 					}
 
-					MultiProcessing processor = new MultiProcessing(jobList, 10);
+					MultiProcessing processor = new MultiProcessing(jobList, 20);
 					processor.multiProcessStart();
 
 					String[] musicKey = processor.getMusicKey();

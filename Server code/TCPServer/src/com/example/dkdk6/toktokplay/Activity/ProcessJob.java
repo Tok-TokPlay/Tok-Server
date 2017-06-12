@@ -28,15 +28,15 @@ public class ProcessJob implements Runnable{
 		String[] processJob = {"java","-jar", "ComparingJob.jar", dbDirectory, fileName, userBeatName};
 		try {
 			Process process = new ProcessBuilder(processJob).start();
-			/*
+			
 			// If you want to see debugging tools...
 			SequenceInputStream seqIn = new SequenceInputStream(process.getInputStream(), process.getErrorStream());	
 			Scanner s = new Scanner(seqIn); 
 			while (s.hasNextLine() == true) { 
 				System.out.println(s.nextLine()); 
 				}	
-			*/
 			
+		
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -87,6 +87,7 @@ public class ProcessJob implements Runnable{
 					e.printStackTrace();
 					// Do nothing but get error code.
 				}
+				resultFile.delete();
 				// Check then delete it.
 			return true;
 		}
